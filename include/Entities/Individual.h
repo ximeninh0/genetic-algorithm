@@ -24,4 +24,5 @@ public:
     void add_gene(Gene new_gene);
     void remove_gene_by_name(char gene_name);
     int get_fitness();
+    Gene get_first_gene();
 };

@@ -14,6 +14,7 @@
 
 using namespace std;
 
+// g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp -o main
 
 
 
@@ -89,5 +90,6 @@ int main()
     }
     Population population(cities[0], cities, 10);
     population.print_population();
+    // population.get
     // } while (option != 3);
 }

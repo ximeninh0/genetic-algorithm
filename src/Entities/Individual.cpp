@@ -19,11 +19,18 @@ Individual::Individual(vector<Gene> new_chromossome, int index, int generation, 
 }
 void Individual::print_individual()
 {
-    cout << 'I' << generation << '_' << index << "| ";
+    cout << 'I' << generation << '_' << index;
+
+    if(index >= 10) cout << "| ";
+    else cout << " | ";
+
+    cout << get_first_gene().get_name() << " | ";
     for (Gene gene : chromossome)
     {
         cout << gene.get_name() << " | ";
     }
+    cout << get_first_gene().get_name() << " |";
+    cout << " Fit: " << get_fitness();
     cout << endl;
 }
 
@@ -34,6 +41,8 @@ int Individual::get_generation() { return generation; }
 void Individual::set_generation(char new_generation) { generation = new_generation; }
 
 void Individual::add_gene(Gene new_gene) { chromossome.push_back(new_gene); }
+
+Gene Individual::get_first_gene(){return first_city; }
 
 void Individual::remove_gene_by_name(char gene_name)
 {
@@ -51,11 +60,11 @@ int Individual::get_fitness()
     for (int i = 0; i < chromossome.size() - 1; i++)
     {
         if (i != 0 && i != (chromossome.size() - 1))
-            tools.weight(chromossome[i].get_point(), chromossome[i + 1].get_point());
+            fitness -= tools.weight(chromossome[i].get_point(), chromossome[i + 1].get_point());
         else if (i == 0)
-            tools.weight(this->first_city.get_point(), chromossome[i].get_point());
+            fitness -= tools.weight(this->first_city.get_point(), chromossome[i].get_point());
         else
-            tools.weight(chromossome[i].get_point(), this->first_city.get_point());
+            fitness -= tools.weight(chromossome[i].get_point(), this->first_city.get_point());
     }
     return fitness;
 }
