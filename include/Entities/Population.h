@@ -30,5 +30,6 @@ public:
     int get_generation();
     void set_generation(char new_generation);
     void add_individual(Individual new_individual);
+    vector<Individual> get_individuals();
     void remove_individual_by_index(int index);
 };

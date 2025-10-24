@@ -46,6 +46,7 @@ void Population::set_index(char new_index) { index = new_index; }
 int Population::get_generation() { return generation; }
 void Population::set_generation(char new_generation) { generation = new_generation; }
 
+vector<Individual> Population::get_individuals(){return individuals;}
 void Population::add_individual(Individual new_individual) { individuals.push_back(new_individual); }
 
 void Population::remove_individual_by_index(int index) { individuals.erase(individuals.begin() + index - 1); }
@@ -57,3 +58,4 @@ void Population::print_population()
         individual.print_individual();
     }
 }
+
