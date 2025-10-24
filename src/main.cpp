@@ -11,59 +11,11 @@
 #include "Entities/Point.h"
 #include "Entities/Population.h"
 #include "Tools/Tools.h"
+#include "Genetics/GeneticAlgorithm.h"
 
 using namespace std;
 
-// g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp -o main
-
-
-
-// class GeneticEstrategy
-// {
-// private:
-//     Reproduction reproducion_tools;
-//     Mutation mutation_tools;
-//     PopulationAdjust pop_adj_tools;
-
-// public:
-//     Individual ApplyGeneticAlgorithim(Population population, int epochs)
-//     {
-//         Individual solution;
-
-//         for (int i = 0; i < epochs; i++)
-//         {
-//             reproducion_tools.reproduction_logic(Population population);
-//         }
-
-//         return solution;
-//     }
-
-//     // vector<float> GenerateRouletteArray(Population population){
-//     //     // for()
-//     // }
-// };
-
-// class Reproduction
-// {
-// private:
-// public:
-//     void reproduction_logic()
-//     {
-//     }
-// };
-
-// class Mutation
-// {
-// private:
-// public:
-// };
-
-// class PopulationAdjust
-// {
-// private:
-// public:
-// };
-
+// g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp src/Genetics/*.cpp -o main
 
 
 int main()
@@ -71,6 +23,7 @@ int main()
     int option;
     vector<Gene> cities;
     vector<Gene> solution;
+    GeneticAlgorithm genetic;
     Tools tools;
     tools.header();
 
@@ -90,6 +43,7 @@ int main()
     }
     Population population(cities[0], cities, 10);
     population.print_population();
+    genetic.RunGeneticAlgorithim(population,10);
     // population.get
     // } while (option != 3);
 }
