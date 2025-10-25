@@ -15,6 +15,7 @@ private:
     Gene first_city;
 
 public:
+    Individual();
     Individual(vector<Gene> new_chromossome, int index, int generation, Gene first_route_city);
     void print_individual();
     int get_index();

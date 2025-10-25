@@ -17,6 +17,9 @@ Individual::Individual(vector<Gene> new_chromossome, int index, int generation, 
     this->generation = generation;
     this->first_city = first_route_city;
 }
+
+Individual::Individual() {}
+
 void Individual::print_individual()
 {
     cout << 'I' << generation << '_' << index;

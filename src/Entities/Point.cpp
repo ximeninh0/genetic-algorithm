@@ -1,4 +1,4 @@
-#include "entities/Point.h"
+#include "Entities/Point.h"
 
 int Point::get_x() { return x; }
 int Point::get_y() { return y; }

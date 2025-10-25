@@ -14,6 +14,8 @@
 
 using namespace std;
 
+class Individual; // Forward declaration
+
 class Population
 {
 private:
@@ -23,6 +25,7 @@ private:
     vector<Individual> individuals;
 
 public:
+    Population();
     Population(Gene first_route_city, vector<Gene> cities, int size_p);
     void print_population();
     int get_index();
@@ -30,6 +33,7 @@ public:
     int get_generation();
     void set_generation(char new_generation);
     void add_individual(Individual new_individual);
+    int  get_size();
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);
 };

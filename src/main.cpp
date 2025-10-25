@@ -90,6 +90,8 @@ int main()
     }
     Population population(cities[0], cities, 10);
     population.print_population();
+    population = tools.getBestHalf(population);
+    population.print_population();
     // population.get
     // } while (option != 3);
 }
