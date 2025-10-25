@@ -10,7 +10,7 @@
 #include "Entities/Population.h"
 #include "Genetics/Reproduction.h"
 #include "Entities/Individual.h"
-
+#include "Tools/Tools.h"
 using namespace std;
 
 
@@ -34,14 +34,9 @@ vector<Individual> Reproduction::roulette_method(Population population)
         for (Individual indv : individuals) {
             float indv_fit = indv.get_fitness() *(-1);
             float indv_slice = (float)indv_fit / (float)total_fitness;
-            cout << indv_slice << endl;
             roulette.push_back(indv_slice);
         }
-    
 
-    // for(Individual indv : individuals) 
-    //     indv.print_individual();
-    // cout << "\n" << endl;
     Individual individual_1 = gene_giveaway(individuals,roulette,total_fitness);
     vector<float> roullet2;
     total_fitness = 0;
@@ -49,19 +44,11 @@ vector<Individual> Reproduction::roulette_method(Population population)
     for (Individual indv : individuals) {
         float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
-        cout << indv_slice << endl;
         roullet2.push_back(indv_slice);
     }
 
     Individual individual_2 = gene_giveaway(individuals,roullet2,total_fitness);
 
-    // for(Individual indv : individuals) 
-    //     indv.print_individual();
-    // cout << "\n" << endl;
-    // cout << "\n" << endl;
-
-    // individual_1.print_individual();
-    // individual_2.print_individual();
     vector<Individual> elected_individuals;
     elected_individuals.push_back(individual_1);
     elected_individuals.push_back(individual_2);
@@ -73,11 +60,9 @@ Individual Reproduction::gene_giveaway(vector<Individual> &individuals, vector<f
 {
     int acc = 0;
     int slice_giveway = std::experimental::randint(1,total_fit);
-    cout << total_fit << "t  s" << slice_giveway << endl;
     for (int i = 0; i < (roulette.size()); i++) {
         float gene_range = roulette[i] * total_fit;
         acc += gene_range;
-        cout << acc << "  " << gene_range << endl;
         if(slice_giveway <= acc) {
             Individual selected = individuals[i];
             individuals.erase(individuals.begin() + i);
@@ -98,22 +83,34 @@ Population Reproduction::add_children_to_pop(Population population, vector<Indiv
 
 vector<Individual> Reproduction::reproduct(Individual individual_1, Individual individual_2, bool two_children)
 {
+    Tools tools;
     int max_index = individual_1.get_chromossome().size() - 1;
-    int random_index = std::experimental::randint(2,max_index);
+    int random_index = tools.random_number(1,max_index-1);
     cout << random_index << endl;
+    // cout << 'm' << max_index << endl;
+    cout << "Couple: " << individual_1.get_index() << individual_2.get_index() << endl;
     vector<Gene> f_children_chromossome, s_children_chromossome;
     queue<Gene> first_slice;
     queue<Gene> second_slice;
     queue<Gene> aux_queue;
     
     for(int i = 0; i <= max_index; i++){
-        if(i <= random_index) first_slice.push(individual_1.get_chromossome()[i]);
+        if(i <= random_index) {
+            cout << "Pushing_fs: " << individual_1.get_chromossome()[i].get_name() << endl;
+            first_slice.push(individual_1.get_chromossome()[i]);
+        }
         else second_slice.push(individual_1.get_chromossome()[i]);
+    }
+
+    for(int i = 0; i < first_slice.size(); i++){
+        // cout << first_slice.back().get_name() << endl;
     }
 
     for(int i = 0; i <= max_index; i++){
         Gene gene = individual_2.get_chromossome()[i];
         if(!is_gene_in_chrom(gene,first_slice)){
+            cout << "Pushing_aux: " << gene.get_name() << endl;
+            cout << first_slice.back().get_name() << endl;
             aux_queue.push(gene);
         }
     }
@@ -139,6 +136,10 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
         return childrens;
     }
     else {
+        if(aux_queue.empty())
+            cout << "vazia" << endl;
+
+        cout << aux_queue.front().get_name() << endl;
         for(int i = 0; i <= max_index; i++){
             Gene gene = individual_2.get_chromossome()[i];
             if(!is_gene_in_chrom(gene,second_slice)){
@@ -165,8 +166,12 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
 
 bool Reproduction::is_gene_in_chrom(Gene gene, queue<Gene> chromossome)
 {
-    for(int i = 0; i < chromossome.size(); i++){
-        if(chromossome.front().get_name() == gene.get_name()) return true;
+    while(!chromossome.empty()){
+        cout << "testando: " << chromossome.front().get_name() << endl;
+        if(chromossome.front().get_name() == gene.get_name()){
+            cout << "achou: " << chromossome.front().get_name() << endl;
+            return true;
+        }
         else chromossome.pop();
     }
     return false;

@@ -36,11 +36,10 @@ int main()
         cities = tools.PopulateCitiesWithRandomPoints(cities);
         break;
         // 360 divido pela quantidade de pontos
-    case 2:
-        for (Gene city : cities)
-            city.print_gene();
-        break;
+    case 2: break;
     }
+    for (Gene city : cities)
+        city.print_gene();
     Population population(cities[0], cities, 15);
     population.print_population();
     genetic.RunGeneticAlgorithim(population,5);
