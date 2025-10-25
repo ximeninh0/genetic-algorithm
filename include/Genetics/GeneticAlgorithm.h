@@ -1,3 +1,6 @@
+#pragma once
+
+
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -24,7 +27,7 @@ private:
     Mutation mutation_tools;
 
 public:
-    GeneticAlgorithm(){}
+    GeneticAlgorithm();
     void RunGeneticAlgorithim(Population population, int epochs);
 
 };

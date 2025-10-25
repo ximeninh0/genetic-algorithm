@@ -41,9 +41,9 @@ int main()
             city.print_gene();
         break;
     }
-    Population population(cities[0], cities, 10);
+    Population population(cities[0], cities, 15);
     population.print_population();
-    genetic.RunGeneticAlgorithim(population,10);
+    genetic.RunGeneticAlgorithim(population,5);
     // population.get
     // } while (option != 3);
 }

@@ -40,6 +40,7 @@ void Individual::set_index(char new_index) { index = new_index; }
 int Individual::get_generation() { return generation; }
 void Individual::set_generation(char new_generation) { generation = new_generation; }
 
+vector<Gene> Individual::get_chromossome(){return this->chromossome;}
 void Individual::add_gene(Gene new_gene) { chromossome.push_back(new_gene); }
 
 Gene Individual::get_first_gene(){return first_city; }
@@ -68,3 +69,5 @@ int Individual::get_fitness()
     }
     return fitness;
 }
+
+

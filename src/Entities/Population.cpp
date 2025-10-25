@@ -57,5 +57,6 @@ void Population::print_population()
     {
         individual.print_individual();
     }
+    cout << "\n" << endl;
 }
 

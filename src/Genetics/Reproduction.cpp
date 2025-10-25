@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include <ctime>
+#include <queue>
 #include <experimental/random>
 #include <random>
 #include <experimental/random>
@@ -15,47 +16,158 @@ using namespace std;
 
 void Reproduction::reproduct_population(Population population)
 {
-    this->roulette_method(population);
+    population.print_population();
+    vector<Individual> selected_couple = this->roulette_method(population);
+    vector<Individual> childrens = this->reproduct(selected_couple[0],selected_couple[1],true);
+    Population updated_population = this->add_children_to_pop(population, childrens);
+    // for(Individual indv : selected_couple) indv.print_individual();
+    updated_population.print_population();
+
 }
 
-void Reproduction::roulette_method(Population population)
+vector<Individual> Reproduction::roulette_method(Population population)
 {
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
-    int total_fitness = 0;
-    for (Individual indv : population.get_individuals()) total_fitness += indv.get_fitness();
-    for (Individual indv : population.get_individuals()) {
-        float indv_fit = indv.get_fitness();
+        int total_fitness = 0;
+        for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
+        for (Individual indv : individuals) {
+            float indv_fit = indv.get_fitness() *(-1);
+            float indv_slice = (float)indv_fit / (float)total_fitness;
+            cout << indv_slice << endl;
+            roulette.push_back(indv_slice);
+        }
+    
+
+    // for(Individual indv : individuals) 
+    //     indv.print_individual();
+    // cout << "\n" << endl;
+    Individual individual_1 = gene_giveaway(individuals,roulette,total_fitness);
+    vector<float> roullet2;
+    total_fitness = 0;
+    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual indv : individuals) {
+        float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
-        roulette.push_back(indv_slice);
+        cout << indv_slice << endl;
+        roullet2.push_back(indv_slice);
     }
 
-    for(Individual indv : individuals) 
-        indv.print_individual();
+    Individual individual_2 = gene_giveaway(individuals,roullet2,total_fitness);
 
-    Individual individual_1 = gene_giveaway(individuals,roulette,total_fitness);
-    Individual individual_2 = gene_giveaway(individuals,roulette,total_fitness);
+    // for(Individual indv : individuals) 
+    //     indv.print_individual();
+    // cout << "\n" << endl;
+    // cout << "\n" << endl;
 
-    for(Individual indv : individuals) 
-        indv.print_individual();
+    // individual_1.print_individual();
+    // individual_2.print_individual();
+    vector<Individual> elected_individuals;
+    elected_individuals.push_back(individual_1);
+    elected_individuals.push_back(individual_2);
+    return elected_individuals;
 
 }
 
-Individual Reproduction::gene_giveaway(vector<Individual> individuals, vector<float> roulette, int total_fit)
+Individual Reproduction::gene_giveaway(vector<Individual> &individuals, vector<float> &roulette, int &total_fit)
 {
     int acc = 0;
     int slice_giveway = std::experimental::randint(1,total_fit);
-    for (int i = 0; i < (roulette.size() - 1); i++) {
+    cout << total_fit << "t  s" << slice_giveway << endl;
+    for (int i = 0; i < (roulette.size()); i++) {
         float gene_range = roulette[i] * total_fit;
         acc += gene_range;
-
+        cout << acc << "  " << gene_range << endl;
         if(slice_giveway <= acc) {
             Individual selected = individuals[i];
             individuals.erase(individuals.begin() + i);
             roulette.erase(roulette.begin() + i);
-
+            total_fit -= gene_range;
+            
             return selected;
         }
     }
+}
 
+Population Reproduction::add_children_to_pop(Population population, vector<Individual> children){
+    for (Individual child : children)
+        population.add_individual(child);
+    return population;
+}
+
+
+vector<Individual> Reproduction::reproduct(Individual individual_1, Individual individual_2, bool two_children)
+{
+    int max_index = individual_1.get_chromossome().size() - 1;
+    int random_index = std::experimental::randint(2,max_index);
+    cout << random_index << endl;
+    vector<Gene> f_children_chromossome, s_children_chromossome;
+    queue<Gene> first_slice;
+    queue<Gene> second_slice;
+    queue<Gene> aux_queue;
+    
+    for(int i = 0; i <= max_index; i++){
+        if(i <= random_index) first_slice.push(individual_1.get_chromossome()[i]);
+        else second_slice.push(individual_1.get_chromossome()[i]);
+    }
+
+    for(int i = 0; i <= max_index; i++){
+        Gene gene = individual_2.get_chromossome()[i];
+        if(!is_gene_in_chrom(gene,first_slice)){
+            aux_queue.push(gene);
+        }
+    }
+
+    for(int i = 0; i <= max_index; i++){
+        Gene gene;
+        if(!first_slice.empty()){
+            gene = first_slice.front();
+            first_slice.pop();
+        }
+        else{
+            gene = aux_queue.front();
+            aux_queue.pop();
+        }
+        f_children_chromossome.push_back(gene);
+    }
+    
+    vector<Individual> childrens;
+    Individual first_child(f_children_chromossome,individual_1.get_index(),individual_1.get_generation()+1,individual_1.get_first_gene());
+    childrens.push_back(first_child);
+
+    if(!two_children){
+        return childrens;
+    }
+    else {
+        for(int i = 0; i <= max_index; i++){
+            Gene gene = individual_2.get_chromossome()[i];
+            if(!is_gene_in_chrom(gene,second_slice)){
+                aux_queue.push(gene);
+            }
+        }
+        for(int i = 0; i <= max_index; i++){
+            Gene gene;
+            if(!second_slice.empty()){
+                gene = second_slice.front();
+                second_slice.pop();
+            }
+            else{
+                gene = aux_queue.front();
+                aux_queue.pop();
+            }
+            s_children_chromossome.push_back(gene);
+        }
+        Individual second_child(s_children_chromossome,individual_2.get_index(), individual_2.get_generation()+1, individual_2.get_first_gene());
+        childrens.push_back(second_child);
+        return childrens;
+    }
+}
+
+bool Reproduction::is_gene_in_chrom(Gene gene, queue<Gene> chromossome)
+{
+    for(int i = 0; i < chromossome.size(); i++){
+        if(chromossome.front().get_name() == gene.get_name()) return true;
+        else chromossome.pop();
+    }
+    return false;
 }
