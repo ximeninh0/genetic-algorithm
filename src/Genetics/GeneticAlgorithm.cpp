@@ -26,6 +26,3 @@ void GeneticAlgorithm::RunGeneticAlgorithim(Population population, int epochs)
     // return solution;
 }
 
-    // vector<float> GenerateRouletteArray(Population population){
-    //     // for()
-    // }

@@ -27,15 +27,14 @@ int main()
     Tools tools;
     tools.header();
 
-    // do
-    // {
+
     cin >> option;
     switch (option)
     {
     case 1:
         cities = tools.PopulateCitiesWithRandomPoints(cities);
         break;
-        // 360 divido pela quantidade de pontos
+        // 360 dividido pela quantidade de pontos
     case 2: break;
     }
     for (Gene city : cities)
@@ -43,6 +42,5 @@ int main()
     Population population(cities[0], cities, 15);
     population.print_population();
     genetic.RunGeneticAlgorithim(population,5);
-    // population.get
-    // } while (option != 3);
+
 }

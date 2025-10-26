@@ -20,6 +20,7 @@ float Tools::weight(Point P1, Point P2)
     float weight = pow(x_dist, 2) + pow(y_dist, 2);
     return sqrt(weight);
 }
+
 void Tools::header()
 {
     cout << "------------------------------ \n"
@@ -33,7 +34,6 @@ void Tools::header()
 
 vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 {
-    // std::srand(std::time(nullptr));
     char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                        'Y', 'Z'};
@@ -58,7 +58,6 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 
         char name = alfabeto[i];
         Gene new_city(name, random_x, random_y);
-        // new_city.print_gene();
         cities.push_back(new_city);
     }
     return cities;
