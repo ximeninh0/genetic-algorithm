@@ -16,16 +16,13 @@
 #include "Genetics/GeneticAlgorithm.h"
 
 using namespace std;
+
 GeneticAlgorithm::GeneticAlgorithm(){}
 
+void GeneticAlgorithm::RunGeneticAlgorithim(Population population, int epochs)
+{
+    
+    reproducion_tools.reproduct_population(population);
+    // return solution;
+}
 
-    Individual GeneticAlgorithm::RunGeneticAlgorithim(Population population, int epochs)
-    {
-        
-        reproducion_tools.reproduct_population(population);
-        // return solution;
-    }
-
-    // vector<float> GenerateRouletteArray(Population population){
-    //     // for()
-    // }

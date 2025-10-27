@@ -3,7 +3,9 @@
 #include <vector>
 #include <math.h>
 #include <ctime>
-#include <random> // Para substituir std::experimental::randint
+#include <chrono>
+#include <experimental/random>
+#include <random>
 #include <algorithm>
 #include "Entities/Individual.h"
 #include "Entities/Gene.h"
@@ -33,7 +35,6 @@ void Tools::header()
 
 vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 {
-    std::srand(std::time(nullptr));
     char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                        'Y', 'Z'};
@@ -52,13 +53,12 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 
         do
         {
-            random_x = std::rand() % (area * 2) - area;
-            random_y = std::rand() % (area * 2) - area;
+            random_x = this->random_number((area * (-1)), area);
+            random_y = this->random_number((area * (-1)), area);
         } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2));
 
         char name = alfabeto[i];
         Gene new_city(name, random_x, random_y);
-        // new_city.print_gene();
         cities.push_back(new_city);
     }
     return cities;
@@ -111,4 +111,11 @@ Population Tools::getBestHalf(Population &population)
     }
 
     return new_population; 
+}
+int Tools::random_number(int n1,int n2){
+    static std::mt19937 gen(
+        static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
+    );
+    std::uniform_int_distribution<> dist(n1, n2);
+    return dist(gen);
 }
