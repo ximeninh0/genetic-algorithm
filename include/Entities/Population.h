@@ -23,12 +23,14 @@ private:
     vector<Individual> individuals;
 
 public:
+    Population();
     Population(Gene first_route_city, vector<Gene> cities, int size_p);
     void print_population();
     int get_index();
     void set_index(char new_index);
     int get_generation();
     void set_generation(char new_generation);
+    int get_size();
     void add_individual(Individual new_individual);
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);

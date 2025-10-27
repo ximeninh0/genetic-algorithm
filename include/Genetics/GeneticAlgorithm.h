@@ -23,8 +23,8 @@ using namespace std;
 class GeneticAlgorithm
 {
 private:
-    Reproduction reproducion_tools;
-    Mutation mutation_tools;
+    // Reproduction reproducion_tools;
+    // Mutation mutation_tools;
 
 public:
     GeneticAlgorithm();

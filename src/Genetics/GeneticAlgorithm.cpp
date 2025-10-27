@@ -21,7 +21,7 @@ GeneticAlgorithm::GeneticAlgorithm(){}
 
 void GeneticAlgorithm::RunGeneticAlgorithim(Population population, int epochs)
 {
-    
+    Reproduction reproducion_tools(100);
     reproducion_tools.reproduct_population(population);
     // return solution;
 }
