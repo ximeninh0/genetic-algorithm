@@ -10,6 +10,7 @@
 #include "Entities/Individual.h"
 #include "Entities/Gene.h"
 #include "Entities/Point.h"
+#include "Entities/Population.h"
 
 using namespace std;
 
@@ -63,6 +64,54 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
     return cities;
 }
 
+Population Tools::getBestHalf(Population &population)
+{
+    int half_size = population.get_size() / 2; 
+    vector<Individual> vetor_ind = population.get_individuals(); 
+
+    Population new_population; 
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    for (int i = 0; i < half_size; i++)
+    {
+
+        if (vetor_ind.size() < 2)
+        {
+            if (!vetor_ind.empty())
+            {
+                new_population.add_individual(vetor_ind[0]); 
+            }
+            break; 
+        }
+
+        std::uniform_int_distribution<> dist1(0, vetor_ind.size() - 1);
+        int ind1_index = dist1(gen);
+        Individual ind1 = vetor_ind[ind1_index];
+        vetor_ind.erase(vetor_ind.begin() + ind1_index);
+
+        std::uniform_int_distribution<> dist2(0, vetor_ind.size() - 1);
+        int ind2_index = dist2(gen);
+        Individual ind2 = vetor_ind[ind2_index];
+        vetor_ind.erase(vetor_ind.begin() + ind2_index);
+
+        if (ind1.get_fitness() < ind2.get_fitness())
+        {
+            new_population.add_individual(ind1);
+        }
+        else if(ind2.get_fitness() < ind1.get_fitness())
+        {
+            new_population.add_individual(ind2);
+        }
+        else
+        {
+            new_population.add_individual(ind1);
+        }
+    }
+
+    return new_population; 
+}
 int Tools::random_number(int n1,int n2){
     static std::mt19937 gen(
         static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())

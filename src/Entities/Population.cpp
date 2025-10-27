@@ -9,7 +9,8 @@
 #include "Entities/Point.h"
 #include "Entities/Gene.h"
 #include "Entities/Individual.h"
-#include "entities/Population.h"
+#include "Entities/Population.h"
+
 using namespace std;
 
 Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
@@ -40,6 +41,8 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
     }
 }
 
+Population::Population() {}
+
 int Population::get_index() { return index; }
 void Population::set_index(char new_index) { index = new_index; }
 
@@ -50,6 +53,8 @@ vector<Individual> Population::get_individuals(){return individuals;}
 void Population::add_individual(Individual new_individual) { individuals.push_back(new_individual); }
 
 void Population::remove_individual_by_index(int index) { individuals.erase(individuals.begin() + index - 1); }
+
+int Population::get_size(){ return this->individuals.size(); }
 
 void Population::print_population()
 {
