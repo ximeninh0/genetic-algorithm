@@ -20,6 +20,8 @@ public:
     int get_index();
     void set_index(char new_index);
     int get_generation();
+    vector<Gene> get_chromossome();
+    void changeDNA(vector<Gene> &new_chrome);
     void set_generation(char new_generation);
     void add_gene(Gene new_gene);
     void remove_gene_by_name(char gene_name);

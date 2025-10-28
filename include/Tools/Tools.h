@@ -20,4 +20,5 @@ public:
     float weight(Point P1, Point P2);
     void header();
     vector<Gene> PopulateCitiesWithRandomPoints(vector<Gene> cities);
+    int random_number(int n1, int n2);
 };

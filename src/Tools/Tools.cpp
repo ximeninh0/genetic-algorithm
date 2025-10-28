@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include <ctime>
+#include <chrono>
 #include <experimental/random>
 #include <random>
 #include <algorithm>
@@ -19,6 +20,7 @@ float Tools::weight(Point P1, Point P2)
     float weight = pow(x_dist, 2) + pow(y_dist, 2);
     return sqrt(weight);
 }
+
 void Tools::header()
 {
     cout << "------------------------------ \n"
@@ -32,7 +34,6 @@ void Tools::header()
 
 vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 {
-    std::srand(std::time(nullptr));
     char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                        'Y', 'Z'};
@@ -51,14 +52,22 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 
         do
         {
-            random_x = std::experimental::randint((area * (-1)), area);
-            random_y = std::experimental::randint((area * (-1)), area);
+            random_x = this->random_number((area * (-1)), area);
+            random_y = this->random_number((area * (-1)), area);
         } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2));
 
         char name = alfabeto[i];
         Gene new_city(name, random_x, random_y);
-        // new_city.print_gene();
         cities.push_back(new_city);
     }
     return cities;
+}
+
+int Tools::random_number(int n1,int n2){
+    // static std::mt19937 gen(
+    //     static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
+    // );
+    static std::mt19937 gen(220);
+    std::uniform_int_distribution<> dist(n1, n2);
+    return dist(gen);
 }
