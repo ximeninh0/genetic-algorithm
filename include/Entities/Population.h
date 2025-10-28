@@ -32,6 +32,8 @@ public:
     void set_generation(char new_generation);
     int get_size();
     void add_individual(Individual new_individual);
+    void set_individuals(vector<Individual> indvs);
+    void pop_indv();
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);
     void sort_individuals();

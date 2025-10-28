@@ -12,6 +12,7 @@ Mutation::Mutation(float mutat_i_rate, float mutat_g_rate){
 void Mutation::mutate_population(Population &population){
 
     Tools tools;
+    vector<Individual> indvs_from_population = population.get_individuals();
     int mutations_amount = (this->mutation_indv_rate  / 100) * population.get_size();
     for(int i = 0; i < population.get_size(); i++){
         int random_index = tools.random_number(0, population.get_size() - 1);
@@ -20,8 +21,9 @@ void Mutation::mutate_population(Population &population){
         << "_"
         << population.get_individuals()[random_index].get_index()
         << endl;
-        this->mutate_individual(population.get_individuals()[random_index]);
+        this->mutate_individual(indvs_from_population[random_index]);
     }
+    population.set_individuals(indvs_from_population);
 }
 
 void Mutation::mutate_individual(Individual &individual){

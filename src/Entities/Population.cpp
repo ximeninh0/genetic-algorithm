@@ -52,7 +52,7 @@ void Population::set_generation(char new_generation) { generation = new_generati
 
 vector<Individual> Population::get_individuals(){return individuals;}
 void Population::add_individual(Individual new_individual) { individuals.push_back(new_individual); }
-
+void Population::set_individuals(vector<Individual> indvs) {this->individuals = indvs; }
 int Population::get_size(){ return this->size_p; }
 void Population::remove_individual_by_index(int index) { individuals.erase(individuals.begin() + index - 1); }
 
@@ -65,11 +65,16 @@ void Population::print_population()
     cout << "\n" << endl;
 }
 
+void Population::pop_indv(){
+    this->individuals.pop_back();
+}
+
+
 void Population::sort_individuals(){
     vector<Individual> individuals = this->get_individuals();
     for (int i = 0; i < individuals.size(); i++){
         for(int j = i; j < individuals.size(); j++){
-            if(individuals[j].get_fitness() < individuals[i].get_fitness()){
+            if(individuals[j].get_fitness() > individuals[i].get_fitness()){
                 Individual temp = individuals[j];
                 individuals[j] = individuals[i];
                 individuals[i] = temp;
@@ -77,5 +82,4 @@ void Population::sort_individuals(){
         }
     }
     this->individuals = individuals;
-
 }
