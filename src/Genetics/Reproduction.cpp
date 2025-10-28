@@ -15,33 +15,39 @@ using namespace std;
 
 Reproduction::Reproduction(float reprod_rate){
     this->reproduction_rate = reprod_rate;
+    this->new_indv_index = 1;
+    this->generation_index = 1;
+    this->two_children = true;
 }
 
-void Reproduction::reproduct_population(Population population)
+void Reproduction::reproduct_population(Population &population)
 {   
-    cout << "Populacao " << "antes da reprodução" << endl;
-    population.print_population();
+    this->generation_index++;
+    vector<Individual> childs;
 
-    vector<Individual> selected_couple = this->roulette_method(population);
-    vector<Individual> childrens = this->reproduct(selected_couple[0],selected_couple[1],true);
-    Population updated_population = this->add_children_to_pop(population, childrens);
-
-    cout << "Populacao" << "com filhos da reprodução" << endl;
-    updated_population.print_population();
-
+    int reproductions_amount = (this->reproduction_rate  / 100) * population.get_size();
+    for(int i = 0; i < reproductions_amount; i++){
+        vector<Individual> selected_couple = this->roulette_method(population);
+        vector<Individual> childrens = this->reproduct(selected_couple[0],selected_couple[1],two_children);
+        childs.push_back(childrens[0]);
+        childs.push_back(childrens[1]);
+        if(two_children) this->new_indv_index += 2;
+        else this->new_indv_index++;
+    }
+    this->add_children_to_pop(population, childs);
 }
 
 vector<Individual> Reproduction::roulette_method(Population population)
 {
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
-        int total_fitness = 0;
-        for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
-        for (Individual indv : individuals) {
-            float indv_fit = indv.get_fitness() *(-1);
-            float indv_slice = (float)indv_fit / (float)total_fitness;
-            roulette.push_back(indv_slice);
-        }
+    int total_fitness = 0;
+    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual indv : individuals) {
+        float indv_fit = indv.get_fitness() *(-1);
+        float indv_slice = (float)indv_fit / (float)total_fitness;
+        roulette.push_back(indv_slice);
+    }
 
     Individual individual_1 = gene_giveaway(individuals,roulette,total_fitness);
     vector<float> roullet2;
@@ -82,12 +88,10 @@ Individual Reproduction::gene_giveaway(vector<Individual> &individuals, vector<f
     }
 }
 
-Population Reproduction::add_children_to_pop(Population population, vector<Individual> children){
+void Reproduction::add_children_to_pop(Population &population, vector<Individual> children){
     for (Individual child : children)
         population.add_individual(child);
-    return population;
 }
-
 
 vector<Individual> Reproduction::reproduct(Individual individual_1, Individual individual_2, bool two_children)
 {
@@ -125,7 +129,7 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
     }
     
     vector<Individual> childrens;
-    Individual first_child(f_children_chromossome,individual_1.get_index(),
+    Individual first_child(f_children_chromossome,this->new_indv_index,
                            individual_1.get_generation()+1,
                            individual_1.get_first_gene()
                         );
@@ -154,7 +158,7 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
             }
             s_children_chromossome.push_back(gene);
         }
-        Individual second_child(s_children_chromossome,individual_2.get_index(),
+        Individual second_child(s_children_chromossome,this->new_indv_index + 1,
                                 individual_2.get_generation()+1, 
                                 individual_2.get_first_gene()
                                 );
@@ -219,4 +223,16 @@ Population Reproduction::getBestHalf(Population &population)
     }
 
     return new_population; 
+}
+
+void Reproduction::compare_couple_with_children(Population &population, vector<Individual> children, vector<Individual> couple){
+
+}
+
+void Reproduction::sort_and_anihilate(Population &population){
+    if (population.get_individuals().size() > population.get_size()){
+
+
+
+    }
 }

@@ -34,4 +34,6 @@ public:
     void add_individual(Individual new_individual);
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);
+    void sort_individuals();
+
 };

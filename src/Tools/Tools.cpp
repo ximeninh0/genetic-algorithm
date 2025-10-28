@@ -64,9 +64,10 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 }
 
 int Tools::random_number(int n1,int n2){
-    static std::mt19937 gen(
-        static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
-    );
+    // static std::mt19937 gen(
+    //     static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
+    // );
+    static std::mt19937 gen(220);
     std::uniform_int_distribution<> dist(n1, n2);
     return dist(gen);
 }

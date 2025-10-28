@@ -42,6 +42,9 @@ void Individual::set_generation(char new_generation) { generation = new_generati
 
 vector<Gene> Individual::get_chromossome(){return this->chromossome;}
 void Individual::add_gene(Gene new_gene) { chromossome.push_back(new_gene); }
+void Individual::changeDNA(vector<Gene> &new_chrome){
+    this->chromossome = new_chrome;
+}
 
 Gene Individual::get_first_gene(){return first_city; }
 

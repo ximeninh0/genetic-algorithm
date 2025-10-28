@@ -39,8 +39,9 @@ int main()
     }
     for (Gene city : cities)
         city.print_gene();
-    Population population(cities[0], cities, 15);
+    Population population(cities[0], cities, cities.size());
     population.print_population();
     genetic.RunGeneticAlgorithim(population,5);
+
 
 }

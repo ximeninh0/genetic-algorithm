@@ -22,7 +22,25 @@ GeneticAlgorithm::GeneticAlgorithm(){}
 void GeneticAlgorithm::RunGeneticAlgorithim(Population population, int epochs)
 {
     Reproduction reproducion_tools(100);
+    Mutation mutation_tools(5,5);
+    cout << "----------ANTES DA REPRODUCAO----------" << endl;
+    population.print_population();
+
     reproducion_tools.reproduct_population(population);
+
+    cout << "----------DEPOIS DA REPRODUCAO----------" << endl;
+    population.print_population();
+
+    cout << "----------ANTES DA MUTACAO----------" << endl;
+    population.print_population();
+
+    mutation_tools.mutate_population(population);
+
+    cout << "----------DEPOIS DA MUTACAO----------" << endl;
+    population.print_population();
+
+    // cout << "depois" << endl;
+    // population.print_population();
     // return solution;
 }
 
