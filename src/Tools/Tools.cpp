@@ -70,10 +70,10 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 
 // Função para calcular números aleatórios dentro de um intervalo inteiro
 int Tools::random_number(int limite_inferior,int limite_superior){
-    // static std::mt19937 gen(
-    //     static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
-    // );
-    static std::mt19937 gen(220);
+    static std::mt19937 gen(
+        static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
+    );
+    // static std::mt19937 gen(220);
     std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(gen);
 }

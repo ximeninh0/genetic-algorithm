@@ -37,6 +37,8 @@ void Reproduction::reproduct_population(Population &population)
         else this->new_indv_index++;
     }
     this->add_children_to_pop(population, childs);
+    this->new_indv_index = 1; 
+
 }
 
 // Método da roleta, escolhe indivíduos para reproduzir e tem mais chance de escolher indivíduos de melhor qualidade
