@@ -22,7 +22,7 @@ int main()
 {
     int option;
     vector<Gene> cities;
-    vector<Gene> solution;
+    Individual solution;
     GeneticAlgorithm genetic;
     Tools tools;
     tools.header();
@@ -36,11 +36,17 @@ int main()
         // 360 dividido pela quantidade de pontos
     case 2: break;
     }
+
     for (Gene city : cities)
         city.print_gene();
-    Population population(cities[0], cities, 10);
-    population.print_population();
-    genetic.RunGeneticAlgorithim(population,15);
 
+    Population population(cities[0], cities, 10);    
+    solution = genetic.RunGeneticAlgorithim(population,15);
+    std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
+    cout << "tuplas: " << endl;
+    for (const auto& p : pairs) {
+        std::cout << "(" << p.first << ", " << p.second << ")\n";
+    }    
+    tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
 
 }

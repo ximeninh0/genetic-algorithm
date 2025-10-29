@@ -10,6 +10,8 @@
 #include "Tools/Tools.h"
 using namespace std;
 
+Individual::Individual(){}
+
 // Construtor Padrão
 Individual::Individual(vector<Gene> new_chromossome, int index, int generation, Gene first_route_city)
 {

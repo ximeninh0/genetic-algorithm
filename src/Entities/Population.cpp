@@ -41,6 +41,7 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
         Individual individual(new_indiv_chromo, indv_index + 1, 1, first_route_city);
         this->individuals.push_back(individual);
     }
+    this->generation = 1;
 }
 
 // Construtor vazio para aplicações do código

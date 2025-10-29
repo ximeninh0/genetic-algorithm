@@ -10,6 +10,10 @@
 #include "Entities/Individual.h"
 #include "Entities/Gene.h"
 #include "Entities/Point.h"
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 using namespace std;
 
@@ -76,4 +80,32 @@ int Tools::random_number(int limite_inferior,int limite_superior){
     // static std::mt19937 gen(220);
     std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(gen);
+}
+
+std::vector<std::pair<float,float>> Tools::individual_to_tuple_array(vector<Gene> chromossome, Gene first_point){
+    std::vector<std::pair<float,float>> result;
+    std::pair<float,float> first_point_t = {first_point.get_point().get_x(), first_point.get_point().get_y()};
+    result.push_back(first_point_t);
+    for(Gene gene : chromossome){
+        std::pair<float,float> point = {gene.get_point().get_x(), gene.get_point().get_y()};
+        result.push_back(point);
+    }
+    return result;
+}
+
+
+void Tools::save_generation(int gen, float bestFitness, const std::vector<std::pair<float,float>>& points, 
+                            vector<Gene> route, Gene first_point) 
+{
+    json j;
+    j["generation"] = gen;
+    j["best_fitness"] = bestFitness;
+    for (auto& p : points)
+        j["points"].push_back({p.first, p.second});
+    j["route"].push_back(first_point.get_name());
+    for (auto& r : route)
+        j["route"].push_back(r.get_name());
+    j["route"].push_back(first_point.get_name());
+
+    std::ofstream("data.json") << j.dump(4);
 }

@@ -28,6 +28,6 @@ private:
 
 public:
     GeneticAlgorithm();
-    void RunGeneticAlgorithim(Population population, int epochs);
+    Individual RunGeneticAlgorithim(Population &population, int epochs);
 
 };
