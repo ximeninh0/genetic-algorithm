@@ -13,6 +13,7 @@
 #include "Tools/Tools.h"
 using namespace std;
 
+// Costrutor da população, realiza permutações aleatórias para formar as primeiras rotas
 Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
 {
     this->size_p = size_p;
@@ -42,34 +43,23 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
     }
 }
 
+// Construtor vazio para aplicações do código
 Population::Population(){}
 
-int Population::get_index() { return index; }
-void Population::set_index(char new_index) { index = new_index; }
-
-int Population::get_generation() { return generation; }
-void Population::set_generation(char new_generation) { generation = new_generation; }
-
-vector<Individual> Population::get_individuals(){return individuals;}
-void Population::add_individual(Individual new_individual) { individuals.push_back(new_individual); }
-void Population::set_individuals(vector<Individual> indvs) {this->individuals = indvs; }
-int Population::get_size(){ return this->size_p; }
+// Remove um indivíduo pelo seu index
 void Population::remove_individual_by_index(int index) { individuals.erase(individuals.begin() + index - 1); }
 
-void Population::print_population()
-{
-    for (Individual individual : individuals)
-    {
-        individual.print_individual();
-    }
-    cout << "\n" << endl;
-}
+// Retorna o tamanho P especificado para a população no início
+int Population::get_size(){ return this->size_p; }
+
+// Adiciona um indivíduo para a população
+void Population::add_individual(Individual new_individual) { individuals.push_back(new_individual); }
 
 void Population::pop_indv(){
     this->individuals.pop_back();
 }
 
-
+// Ordena os indivíduos com base na qualidade (do melhor pro pior) !!!== APLICAR QUICK SORT ==!!!
 void Population::sort_individuals(){
     vector<Individual> individuals = this->get_individuals();
     for (int i = 0; i < individuals.size(); i++){
@@ -83,3 +73,27 @@ void Population::sort_individuals(){
     }
     this->individuals = individuals;
 }
+
+// Getters e Setters
+int Population::get_index() { return index; }
+void Population::set_index(char new_index) { index = new_index; }
+
+int Population::get_generation() { return generation; }
+void Population::set_generation(char new_generation) { generation = new_generation; }
+
+vector<Individual> Population::get_individuals(){return individuals;}
+void Population::set_individuals(vector<Individual> indvs) {this->individuals = indvs; }
+
+
+// Prints
+void Population::print_population()
+{
+    for (Individual individual : individuals)
+    {
+        individual.print_individual();
+    }
+    cout << "\n" << endl;
+}
+
+
+

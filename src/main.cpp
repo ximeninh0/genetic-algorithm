@@ -27,7 +27,6 @@ int main()
     Tools tools;
     tools.header();
 
-
     cin >> option;
     switch (option)
     {

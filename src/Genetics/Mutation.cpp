@@ -9,6 +9,7 @@ Mutation::Mutation(float mutat_i_rate, float mutat_g_rate){
 
 }
 
+// Realiza a mutação nos indivíduos que foram selecionados para mutar (aleatóriamente), de acordo com a taxa de mutação de indivíduos
 void Mutation::mutate_population(Population &population){
 
     Tools tools;
@@ -26,6 +27,7 @@ void Mutation::mutate_population(Population &population){
     population.set_individuals(indvs_from_population);
 }
 
+// Mutação do indivíduo com base na taxa de mutação dos genes, realiza a seleção dos genes de acordo com a taxa e aleatóriamente
 void Mutation::mutate_individual(Individual &individual){
     Tools tools;
     vector<Gene> chromossome = individual.get_chromossome();

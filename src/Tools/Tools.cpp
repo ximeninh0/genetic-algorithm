@@ -13,6 +13,7 @@
 
 using namespace std;
 
+// Função w, recebe dois pontos e calcula a distancia euclediana entre eles
 float Tools::weight(Point P1, Point P2)
 {
     float x_dist = P1.get_x() - P2.get_x();
@@ -21,6 +22,8 @@ float Tools::weight(Point P1, Point P2)
     return sqrt(weight);
 }
 
+
+// Função para imprimir o header
 void Tools::header()
 {
     cout << "------------------------------ \n"
@@ -32,6 +35,7 @@ void Tools::header()
          << endl;
 }
 
+// Preenche um vetor com n cidades, distribuídas em pontos aleatórios
 vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
 {
     char alfabeto[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
@@ -45,16 +49,17 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
     cout << "Insira o raio da área de cobertura dos pontos: " << endl;
     cin >> area;
 
+    // Loop para gerar as cidades
     for (int i = 0; i < n; i++)
     {
         int random_x;
         int random_y;
-
+        // Gera os pontos (x,y) aleatórios dentro da área cartesiana circular estipulada pelo usuário
         do
         {
             random_x = this->random_number((area * (-1)), area);
             random_y = this->random_number((area * (-1)), area);
-        } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2));
+        } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2));  // Repete até que esteja dentro do raio da circunferência
 
         char name = alfabeto[i];
         Gene new_city(name, random_x, random_y);
@@ -63,11 +68,12 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
     return cities;
 }
 
-int Tools::random_number(int n1,int n2){
+// Função para calcular números aleatórios dentro de um intervalo inteiro
+int Tools::random_number(int limite_inferior,int limite_superior){
     // static std::mt19937 gen(
     //     static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
     // );
     static std::mt19937 gen(220);
-    std::uniform_int_distribution<> dist(n1, n2);
+    std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(gen);
 }

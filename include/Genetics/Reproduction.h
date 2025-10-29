@@ -13,10 +13,10 @@ private:
     bool two_children;
     
 public:
-    Reproduction(float reprod_rate);
+    Reproduction(float reprod_rate, bool two_children);
     void reproduct_population(Population &population);
     vector<Individual> roulette_method(Population population);
-    Individual gene_giveaway(vector<Individual> &individuals, vector<float> &roulette, int &total_fit);
+    Individual individual_giveaway(vector<Individual> &individuals, vector<float> &roulette, int &total_fit);
     vector<Individual> reproduct(Individual individual_1, Individual individual_2, bool two_children);
     bool is_gene_in_chrom(Gene gene, queue<Gene> chromossome);
     void add_children_to_pop(Population &population, vector<Individual> children);
