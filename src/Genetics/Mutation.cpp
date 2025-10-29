@@ -17,11 +17,11 @@ void Mutation::mutate_population(Population &population){
     int mutations_amount = (this->mutation_indv_rate  / 100) * population.get_size();
     for(int i = 0; i < population.get_size(); i++){
         int random_index = tools.random_number(0, population.get_size() - 1);
-        cout << "mutando I" 
-        << population.get_individuals()[random_index].get_generation()
-        << "_"
-        << population.get_individuals()[random_index].get_index()
-        << endl;
+        // cout << "mutando I" 
+        // << population.get_individuals()[random_index].get_generation()
+        // << "_"
+        // << population.get_individuals()[random_index].get_index()
+        // << endl;
         this->mutate_individual(indvs_from_population[random_index]);
     }
     population.set_individuals(indvs_from_population);
@@ -44,13 +44,13 @@ void Mutation::mutate_individual(Individual &individual){
             chromossome[i] = chromossome[random_second_index];
             chromossome[random_second_index] = temp;
 
-            cout << "Mutacao!" 
-            << individual.get_chromossome()[i].get_name() 
-            << individual.get_chromossome()[random_second_index].get_name() 
-            << endl;
+            // cout << "Mutacao!" 
+            // << individual.get_chromossome()[i].get_name() 
+            // << individual.get_chromossome()[random_second_index].get_name() 
+            // << endl;
         }
     }
     individual.changeDNA(chromossome);
-    cout << "RESULTADO! " << endl;
-    individual.print_individual();
+    // cout << "RESULTADO! " << endl;
+    // individual.print_individual();
 }
