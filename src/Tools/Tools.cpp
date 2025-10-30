@@ -61,8 +61,8 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
         // Gera os pontos (x,y) aleatórios dentro da área cartesiana circular estipulada pelo usuário
         do
         {
-            random_x = this->random_number((area * (-1)), area);
-            random_y = this->random_number((area * (-1)), area);
+            random_x = this->random_number((area * (-1)), area, 2213);
+            random_y = this->random_number((area * (-1)), area, 2213);
         } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2));  // Repete até que esteja dentro do raio da circunferência
 
         char name = alfabeto[i];
@@ -72,12 +72,18 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints(vector<Gene> cities)
     return cities;
 }
 
-// Função para calcular números aleatórios dentro de um intervalo inteiro
+// Função para calcular números aleatórios dentro de um intervalo inteiro com seed
+int Tools::random_number(int limite_inferior,int limite_superior, int seed){
+    static std::mt19937 gen(seed);
+    std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
+    return dist(gen);
+}
+
+// Função para calcular números aleatórios dentro de um intervalo inteiro sem seed
 int Tools::random_number(int limite_inferior,int limite_superior){
-    // static std::mt19937 gen(
-    //     static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
-    // );
-    static std::mt19937 gen(2213);
+    static std::mt19937 gen(
+        static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())
+    );
     std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(gen);
 }

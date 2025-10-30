@@ -24,6 +24,8 @@ private:
 
 public:
     Population();
+    ~Population();
+
     Population(Gene first_route_city, vector<Gene> cities, int size_p);
     void print_population();
     int get_index();

@@ -20,28 +20,48 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
     Tools tools;
 
     vector<Gene> initial_chromossome;
-
     cities.erase(cities.begin());
-
+    this->individuals.reserve(size_p * 2);
+    cout << "Chegou" << endl;
     initial_chromossome = cities;
     int size = initial_chromossome.size();
+    Individual individual;
     for (int indv_index = 0; indv_index < size_p; indv_index++)
     {
-        vector<Gene> new_indiv_chromo = initial_chromossome;
+        cout << indv_index << endl;
 
+        vector<Gene> new_indiv_chromo = initial_chromossome;
+        
         for (int i = 0; i < initial_chromossome.size(); i++)
         {
-            int random_index = tools.random_number(i, size - 1);
-
+            cout << "oi" <<i << endl;
+            int random_index = tools.random_number(i, size - 1, 2213);
+            
             Gene temp = new_indiv_chromo[random_index];
             new_indiv_chromo[random_index] = new_indiv_chromo[i];
             new_indiv_chromo[i] = temp;
+            // delete &temp;
         }
-
-        Individual individual(new_indiv_chromo, indv_index + 1, 1, first_route_city);
+        
+        cout << "1-tchau" << indv_index << endl;
+        // Individual i= new Individual(asdadsasd)
+        cout << "2-tchau" << indv_index << endl;
+        individual.set_generation(1);
+        individual.set_index(indv_index + 1);
+        individual.set_first_gene(first_route_city);
+        individual.set_chromossome(new_indiv_chromo);
         this->individuals.push_back(individual);
+
+
+        
+        cout << "3-tchau" << indv_index << endl;
+
     }
     this->generation = 1;
+}
+
+Population::~Population(){
+    delete &individuals;
 }
 
 // Construtor vazio para aplicações do código

@@ -12,6 +12,7 @@ using namespace std;
 
 Individual::Individual(){}
 
+
 // Construtor Padrão
 Individual::Individual(vector<Gene> new_chromossome, int index, int generation, Gene first_route_city)
 {
@@ -21,6 +22,12 @@ Individual::Individual(vector<Gene> new_chromossome, int index, int generation, 
     this->first_city = first_route_city;
 }
 
+Individual::~Individual(){
+    delete &chromossome;
+    delete &first_city;
+    delete &index;
+    delete &generation;
+}
 // Muda o cromossomo para um novo
 void Individual::changeDNA(vector<Gene> &new_chrome){
     this->chromossome = new_chrome;
@@ -65,8 +72,10 @@ int Individual::get_generation() { return generation; }
 void Individual::set_generation(char new_generation) { generation = new_generation; }
 
 vector<Gene> Individual::get_chromossome(){return this->chromossome;}
+void Individual::set_chromossome(vector<Gene> chrom){this->chromossome = chrom;}
 
 Gene Individual::get_first_gene(){return first_city;}
+void Individual::set_first_gene(Gene gene){this->first_city = gene;}
 
 // Prints
 void Individual::print_individual()

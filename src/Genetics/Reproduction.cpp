@@ -42,7 +42,7 @@ void Reproduction::reproduct_population(Population &population)
 }
 
 // Método da roleta, escolhe indivíduos para reproduzir e tem mais chance de escolher indivíduos de melhor qualidade
-vector<Individual> Reproduction::roulette_method(Population population)
+vector<Individual> Reproduction::roulette_method(Population &population)
 {
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
@@ -95,13 +95,13 @@ Individual Reproduction::individual_giveaway(vector<Individual> &individuals, ve
 }
 
 // Adiciona os filhos para uma população, utilizada ao fim do algorimto de reprodução
-void Reproduction::add_children_to_pop(Population &population, vector<Individual> children){
+void Reproduction::add_children_to_pop(Population &population, vector<Individual> &children){
     for (Individual child : children)
         population.add_individual(child);
 }
 
 // Lógica da reprodução, pega características do individuo 1 e mescla com as do indivíduo 2 gerando 1 ou 2 filhos a partir do filamento genético
-vector<Individual> Reproduction::reproduct(Individual individual_1, Individual individual_2, bool two_children)
+vector<Individual> Reproduction::reproduct(Individual &individual_1, Individual &individual_2, bool two_children)
 {
     Tools tools;
     int max_index = individual_1.get_chromossome().size() - 1;
@@ -184,7 +184,7 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
 }
 
 // Retorna verdade se o Gene estiver presente no cromossomo(fila)
-bool Reproduction::is_gene_in_chrom(Gene gene, queue<Gene> chromossome)
+bool Reproduction::is_gene_in_chrom(Gene &gene, queue<Gene> chromossome)
 {
     while(!chromossome.empty()){
         if(chromossome.front().get_name() == gene.get_name()) return true;

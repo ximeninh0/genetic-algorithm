@@ -20,33 +20,43 @@ using namespace std;
 
 int main()
 {
-    int option;
+    int option, tx_reprod,tx_mut_indv,tx_mut_gene;
     vector<Gene> cities;
     Individual solution;
-    GeneticAlgorithm genetic;
     Tools tools;
     tools.header();
-
+    
     cin >> option;
     switch (option)
     {
-    case 1:
+        case 1:
         cities = tools.PopulateCitiesWithRandomPoints(cities);
         break;
         // 360 dividido pela quantidade de pontos
-    case 2: break;
+        case 2: break;
     }
-
+    
     for (Gene city : cities)
-        city.print_gene();
-
-    Population population(cities[0], cities, 10);    
-    solution = genetic.RunGeneticAlgorithim(population,15);
+    city.print_gene();
+    
+    Population population(cities[0], cities, 100);
+    cout << "Insira a taxa de reprodução: " << endl;
+    cin >> tx_reprod ;
+    
+    cout << "Insira a taxa de mutação do indivíduo: " << endl;
+    cin >> tx_mut_indv ;
+    
+    cout << "Insira a taxa de mutação do gene: " << endl;
+    cin >> tx_mut_gene ;
+    
+    GeneticAlgorithm genetic(tx_reprod,tx_mut_indv,tx_mut_gene);
+    solution = genetic.RunGeneticAlgorithim(population,100);
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
     }    
     tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
-
+    cout << "Custo Solução: " << solution.get_fitness();
+    return 0;
 }
