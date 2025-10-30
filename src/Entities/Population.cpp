@@ -17,24 +17,23 @@ using namespace std;
 Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
 {
     this->size_p = size_p;
+    this->individuals.reserve(this->size_p * 2);
+    cities.erase(cities.begin());
     Tools tools;
 
     vector<Gene> initial_chromossome;
-    cities.erase(cities.begin());
-    this->individuals.reserve(size_p * 2);
-    cout << "Chegou" << endl;
+    // cout << "Chegou" << endl;
     initial_chromossome = cities;
     int size = initial_chromossome.size();
-    Individual individual;
     for (int indv_index = 0; indv_index < size_p; indv_index++)
     {
-        cout << indv_index << endl;
-
+        // cout << indv_index << endl;
+        
         vector<Gene> new_indiv_chromo = initial_chromossome;
         
         for (int i = 0; i < initial_chromossome.size(); i++)
         {
-            cout << "oi" <<i << endl;
+            // cout << "oi" <<i << endl;
             int random_index = tools.random_number(i, size - 1, 2213);
             
             Gene temp = new_indiv_chromo[random_index];
@@ -43,20 +42,24 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
             // delete &temp;
         }
         
-        cout << "1-tchau" << indv_index << endl;
+        // cout << "1-tchau" << indv_index << endl;
         // Individual i= new Individual(asdadsasd)
-        cout << "2-tchau" << indv_index << endl;
-        individual.set_generation(1);
-        individual.set_index(indv_index + 1);
-        individual.set_first_gene(first_route_city);
-        individual.set_chromossome(new_indiv_chromo);
+        // cout << "2-tchau" << indv_index << endl;
+        // individual.set_generation(1);
+        // individual.set_index(indv_index + 1);
+        // individual.set_first_gene(first_route_city);
+        // individual.set_chromossome(new_indiv_chromo);
+        Individual individual(new_indiv_chromo,indv_index + 1,1,first_route_city);
+        individual.print_individual();
         this->individuals.push_back(individual);
 
 
-        
         cout << "3-tchau" << indv_index << endl;
-
+        
     }
+    cout << this->individuals.size() << endl;
+    this->print_population();
+
     this->generation = 1;
 }
 
@@ -109,9 +112,9 @@ void Population::set_individuals(vector<Individual> indvs) {this->individuals = 
 // Prints
 void Population::print_population()
 {
-    for (Individual individual : individuals)
+    for (int i = 0; i < this->size_p; i++)
     {
-        individual.print_individual();
+        this->individuals[i].print_individual();
     }
     cout << "\n" << endl;
 }

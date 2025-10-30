@@ -47,8 +47,8 @@ vector<Individual> Reproduction::roulette_method(Population &population)
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
     int total_fitness = 0;
-    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
-    for (Individual indv : individuals) {
+    for (Individual &indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual &indv : individuals) {
         float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
         roulette.push_back(indv_slice);
@@ -57,8 +57,8 @@ vector<Individual> Reproduction::roulette_method(Population &population)
     Individual individual_1 = individual_giveaway(individuals,roulette,total_fitness);
     vector<float> roullet2;
     total_fitness = 0;
-    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
-    for (Individual indv : individuals) {
+    for (Individual &indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual &indv : individuals) {
         float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
         roullet2.push_back(indv_slice);
@@ -96,7 +96,7 @@ Individual Reproduction::individual_giveaway(vector<Individual> &individuals, ve
 
 // Adiciona os filhos para uma população, utilizada ao fim do algorimto de reprodução
 void Reproduction::add_children_to_pop(Population &population, vector<Individual> &children){
-    for (Individual child : children)
+    for (Individual &child : children)
         population.add_individual(child);
 }
 

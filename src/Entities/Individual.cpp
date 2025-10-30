@@ -23,10 +23,11 @@ Individual::Individual(vector<Gene> new_chromossome, int index, int generation, 
 }
 
 Individual::~Individual(){
-    delete &chromossome;
-    delete &first_city;
-    delete &index;
-    delete &generation;
+    // delete &chromossome;
+    // delete &first_city;
+    // delete &index;
+    // delete &generation;
+    // cout << "DESTRUTOR!!" << endl;
 }
 // Muda o cromossomo para um novo
 void Individual::changeDNA(vector<Gene> &new_chrome){

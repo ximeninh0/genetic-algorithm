@@ -30,13 +30,13 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
 
     for(int i = 0; i < epochs; i++){
-        // cout << "----------ANTES DA REPRODUCAO----------" << endl;
-        // population.print_population();
+        cout << "----------ANTES DA REPRODUCAO----------" << endl;
+        population.print_population();
 
         reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
-        // cout << "----------ANTES DA MUTACAO----------" << endl;
-        // population.print_population();
+        cout << "----------ANTES DA MUTACAO----------" << endl;
+        population.print_population();
 
         mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
 
