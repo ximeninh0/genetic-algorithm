@@ -53,11 +53,11 @@ int main()
     
     // cout << "Insira a taxa de mutação do gene: " << endl;
     // cin >> tx_mut_gene ;
-    tam_elite = 10;
+    tam_elite = 15;
     size_p = 50;
-    epochs = 500;
+    epochs = 30;
     tx_mut_indv = 70;
-    tx_mut_gene = 40;
+    tx_mut_gene = 60;
 
     
     Population population(cities[0],cities,size_p,tam_elite);
