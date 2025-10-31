@@ -39,21 +39,25 @@ int main()
     for (Gene city : cities)
     city.print_gene();
     
-    cout << "Insira o Tamanho da Elite " << endl;
-    cin >> tam_elite ;
+    // cout << "Insira o Tamanho da Elite " << endl;
+    // cin >> tam_elite ;
     
-    cout << "Insira o Tamanho da População " << endl;
-    cin >> size_p ;
+    // cout << "Insira o Tamanho da População " << endl;
+    // cin >> size_p ;
 
-    cout << "Insira a Qtd Epócas " << endl;
-    cin >> epochs ;
+    // cout << "Insira a Qtd Epócas " << endl;
+    // cin >> epochs ;
 
-    cout << "Insira a taxa de mutação do indivíduo: " << endl;
-    cin >> tx_mut_indv ;
+    // cout << "Insira a taxa de mutação do indivíduo: " << endl;
+    // cin >> tx_mut_indv ;
     
-    cout << "Insira a taxa de mutação do gene: " << endl;
-    cin >> tx_mut_gene ;
-
+    // cout << "Insira a taxa de mutação do gene: " << endl;
+    // cin >> tx_mut_gene ;
+    tam_elite = 10;
+    size_p = 50;
+    epochs = 500;
+    tx_mut_indv = 70;
+    tx_mut_gene = 40;
 
     
     Population population(cities[0],cities,size_p,tam_elite);

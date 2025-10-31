@@ -10,22 +10,20 @@ Mutation::Mutation(float mutat_i_rate, float mutat_g_rate){
 }
 
 // Realiza a mutação nos indivíduos que foram selecionados para mutar (aleatóriamente), de acordo com a taxa de mutação de indivíduos
-void Mutation::mutate_population(Population &population){
+Population Mutation::mutate_population(Population &population){
 
     Tools tools;
     vector<Individual> indvs_from_population = population.get_individuals();
-    Population updated_population();
+    Population updated_population(population.get_size(), population.get_generation(),population.get_elitism_size());
     int mutations_amount = (this->mutation_indv_rate  / 100) * population.get_size();
+
     for(int i = 0; i < population.get_size(); i++){
         int random_index = tools.random_number(0, population.get_size() - 1);
-        // cout << "mutando I" 
-        // << population.get_individuals()[random_index].get_generation()
-        // << "_"
-        // << population.get_individuals()[random_index].get_index()
-        // << endl;
+
         this->mutate_individual(indvs_from_population[random_index]);
     }
-    population.set_individuals(indvs_from_population);
+    population.clear_population();
+    updated_population.set_individuals(indvs_from_population);
     return updated_population;
 }
 

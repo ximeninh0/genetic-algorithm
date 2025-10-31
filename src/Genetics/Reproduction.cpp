@@ -53,7 +53,7 @@ Population Reproduction::reproduct_population(Population &population)
     }
     // this->add_children_to_pop(population, childs);
     this->new_indv_index = 1; 
-    // population.get_individuals().clear();
+    population.get_individuals().clear();
     updated_population.set_individuals(new_population_individuals);
     return updated_population;
 
