@@ -23,11 +23,12 @@ using namespace std;
 class GeneticAlgorithm
 {
 private:
-    // Reproduction reproducion_tools;
-    // Mutation mutation_tools;
+    int elite_size;
+    int mutation_indv_tx;
+    int mutation_gene_tx;
 
 public:
-    GeneticAlgorithm();
-    void RunGeneticAlgorithim(Population population, int epochs);
+    GeneticAlgorithm(int elite_size, int tx_mut_indv, int tx_mut_gene);
+    Individual RunGeneticAlgorithim(Population &population, int epochs);
 
 };

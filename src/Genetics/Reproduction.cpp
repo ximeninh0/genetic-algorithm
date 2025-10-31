@@ -14,41 +14,59 @@
 using namespace std;
 
 // Construtor principal
-Reproduction::Reproduction(float reprod_rate, bool two_children){
-    this->reproduction_rate = reprod_rate;
+Reproduction::Reproduction(int elite_size){
     this->new_indv_index = 1; 
     this->generation_index = 1;
-    this->two_children = two_children;
+    this->elite_size = elite_size;
 }
 
 // Realiza a reprodução da população passada por rerefência
-void Reproduction::reproduct_population(Population &population)
+Population Reproduction::reproduct_population(Population &population)
 {   
     this->generation_index++;
-    vector<Individual> childs;
+    Population updated_population(population.get_size(), population.get_generation() + 1, population.get_elitism_size());
+    vector<Individual> new_population_individuals;
 
-    int reproductions_amount = (this->reproduction_rate  / 100) * population.get_size();
+    //Adiciona os indivíduos da elite
+    for(int i = 0; i < updated_population.get_elitism_size(); i++){
+        new_population_individuals.push_back(population.get_individuals()[i]);
+    }
+
+    int reproductions_amount = updated_population.get_size() - updated_population.get_elitism_size();
     for(int i = 0; i < reproductions_amount; i++){
+        bool make_two = false;
+
         vector<Individual> selected_couple = this->roulette_method(population);
-        vector<Individual> childrens = this->reproduct(selected_couple[0],selected_couple[1],two_children);
-        childs.push_back(childrens[0]);
-        childs.push_back(childrens[1]);
-        if(two_children) this->new_indv_index += 2;
+
+        if((updated_population.get_size() - new_population_individuals.size()) > 1) make_two = true;
+
+        vector<Individual> childrens = this->reproduct(selected_couple[0], selected_couple[1], make_two);
+
+        if(make_two){
+            new_population_individuals.push_back(childrens[0]);
+            new_population_individuals.push_back(childrens[1]);
+        }
+        else new_population_individuals.push_back(childrens[0]);
+
+        if(make_two) this->new_indv_index += 2;
         else this->new_indv_index++;
     }
-    this->add_children_to_pop(population, childs);
+    // this->add_children_to_pop(population, childs);
     this->new_indv_index = 1; 
+    // population.get_individuals().clear();
+    updated_population.set_individuals(new_population_individuals);
+    return updated_population;
 
 }
 
 // Método da roleta, escolhe indivíduos para reproduzir e tem mais chance de escolher indivíduos de melhor qualidade
-vector<Individual> Reproduction::roulette_method(Population population)
+vector<Individual> Reproduction::roulette_method(Population &population)
 {
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
     int total_fitness = 0;
-    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
-    for (Individual indv : individuals) {
+    for (Individual &indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual &indv : individuals) {
         float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
         roulette.push_back(indv_slice);
@@ -57,8 +75,8 @@ vector<Individual> Reproduction::roulette_method(Population population)
     Individual individual_1 = individual_giveaway(individuals,roulette,total_fitness);
     vector<float> roullet2;
     total_fitness = 0;
-    for (Individual indv : individuals) total_fitness += indv.get_fitness() *(-1);
-    for (Individual indv : individuals) {
+    for (Individual &indv : individuals) total_fitness += indv.get_fitness() *(-1);
+    for (Individual &indv : individuals) {
         float indv_fit = indv.get_fitness() *(-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
         roullet2.push_back(indv_slice);
@@ -95,13 +113,13 @@ Individual Reproduction::individual_giveaway(vector<Individual> &individuals, ve
 }
 
 // Adiciona os filhos para uma população, utilizada ao fim do algorimto de reprodução
-void Reproduction::add_children_to_pop(Population &population, vector<Individual> children){
-    for (Individual child : children)
+void Reproduction::add_children_to_pop(Population &population, vector<Individual> &children){
+    for (Individual &child : children)
         population.add_individual(child);
 }
 
 // Lógica da reprodução, pega características do individuo 1 e mescla com as do indivíduo 2 gerando 1 ou 2 filhos a partir do filamento genético
-vector<Individual> Reproduction::reproduct(Individual individual_1, Individual individual_2, bool two_children)
+vector<Individual> Reproduction::reproduct(Individual &individual_1, Individual &individual_2, bool two_children)
 {
     Tools tools;
     int max_index = individual_1.get_chromossome().size() - 1;
@@ -184,7 +202,7 @@ vector<Individual> Reproduction::reproduct(Individual individual_1, Individual i
 }
 
 // Retorna verdade se o Gene estiver presente no cromossomo(fila)
-bool Reproduction::is_gene_in_chrom(Gene gene, queue<Gene> chromossome)
+bool Reproduction::is_gene_in_chrom(Gene &gene, queue<Gene> chromossome)
 {
     while(!chromossome.empty()){
         if(chromossome.front().get_name() == gene.get_name()) return true;

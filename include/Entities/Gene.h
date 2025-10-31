@@ -10,6 +10,7 @@ private:
 
 public:
     Gene();
+    ~Gene();
     Gene(char name, int x, int y);
     void print_gene();
     char get_name();

@@ -17,6 +17,7 @@ Gene::Gene(char name, int x, int y)
     set_name(name);
     set_point(x, y);
 }
+Gene::~Gene(){ delete &coordinates; }
 
 // Getters e Setters
 char Gene::get_name() { return name; }

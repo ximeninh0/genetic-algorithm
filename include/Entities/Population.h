@@ -17,19 +17,22 @@ using namespace std;
 class Population
 {
 private:
-    int index;
     int generation;
     int size_p;
+    int elitism_size;
     vector<Individual> individuals;
 
 public:
     Population();
-    Population(Gene first_route_city, vector<Gene> cities, int size_p);
+    ~Population();
+
+    Population(Gene first_route_city, vector<Gene> cities, int size_p, int elitsm_size);
+    Population(int size_p, int generation, int elitism_size);
     void print_population();
-    int get_index();
-    void set_index(char new_index);
     int get_generation();
-    void set_generation(char new_generation);
+    void set_generation(int new_generation);
+    int get_elitism_size();
+    void set_elitism_size(int elitsm);
     int get_size();
     void add_individual(Individual new_individual);
     void set_individuals(vector<Individual> indvs);
@@ -37,5 +40,6 @@ public:
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);
     void sort_individuals();
+    void clear_population();
 
 };
