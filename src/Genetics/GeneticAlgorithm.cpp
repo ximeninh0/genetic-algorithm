@@ -30,21 +30,21 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
 
     for(int i = 0; i < epochs; i++){
-        cout << "----------ANTES DA REPRODUCAO----------" << endl;
+        // cout << "----------ANTES DA REPRODUCAO----------" << endl;
+        // population.print_population();
         population.sort_individuals();
-        population.print_population();
 
         population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
-        cout << "----------ANTES DA MUTACAO----------" << endl;
-        population.print_population();
+        // cout << "----------ANTES DA MUTACAO----------" << endl;
+        // population.print_population();
 
         mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
 
-        cout << "----------DEPOIS DA MUTACAO----------" << endl;
-        population.print_population();
+        // cout << "----------DEPOIS DA MUTACAO----------" << endl;
+        // population.print_population();
         
-        population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
+        // population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
 
         // cout << "----------DEPOIS DO SORT----------" << endl;
         // population.print_population();
@@ -53,11 +53,11 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         //     population.pop_indv();
 
         // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
-        // population.print_population();
-        population.set_generation(population.get_generation() + 1);
+        // population.set_generation(population.get_generation() + 1);
     }
-    // cout << "depois" << endl;
-    // population.print_population();
+    cout << "----------Ultima populacao----------" << endl;
+
+    population.print_population();
     return population.get_individuals()[0];
 }
 

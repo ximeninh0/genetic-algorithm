@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-    int option, tam_elite,tx_mut_indv,tx_mut_gene;
+    int option, tam_elite,tx_mut_indv,tx_mut_gene,size_p,epochs;
     vector<Gene> cities;
     Individual solution;
     Tools tools;
@@ -42,15 +42,23 @@ int main()
     cout << "Insira o Tamanho da Elite " << endl;
     cin >> tam_elite ;
     
+    cout << "Insira o Tamanho da População " << endl;
+    cin >> size_p ;
+
+    cout << "Insira a Qtd Epócas " << endl;
+    cin >> epochs ;
+
     cout << "Insira a taxa de mutação do indivíduo: " << endl;
     cin >> tx_mut_indv ;
     
     cout << "Insira a taxa de mutação do gene: " << endl;
     cin >> tx_mut_gene ;
+
+
     
-    Population population(cities[0],cities,15,tam_elite);
+    Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
-    solution = genetic.RunGeneticAlgorithim(population,5);
+    solution = genetic.RunGeneticAlgorithim(population,epochs);
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
     for (const auto& p : pairs) {

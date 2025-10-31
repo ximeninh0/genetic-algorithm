@@ -14,6 +14,7 @@ void Mutation::mutate_population(Population &population){
 
     Tools tools;
     vector<Individual> indvs_from_population = population.get_individuals();
+    Population updated_population();
     int mutations_amount = (this->mutation_indv_rate  / 100) * population.get_size();
     for(int i = 0; i < population.get_size(); i++){
         int random_index = tools.random_number(0, population.get_size() - 1);
@@ -25,6 +26,7 @@ void Mutation::mutate_population(Population &population){
         this->mutate_individual(indvs_from_population[random_index]);
     }
     population.set_individuals(indvs_from_population);
+    return updated_population;
 }
 
 // Mutação do indivíduo com base na taxa de mutação dos genes, realiza a seleção dos genes de acordo com a taxa e aleatóriamente
