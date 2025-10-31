@@ -7,14 +7,13 @@
 class Reproduction
 {
 private:
-    float reproduction_rate;
     int new_indv_index;
     int generation_index;
-    bool two_children;
-    
+    int elite_size;
+
 public:
-    Reproduction(float reprod_rate, bool two_children);
-    void reproduct_population(Population &population);
+    Reproduction(int elite_size);
+    Population reproduct_population(Population &population);
     vector<Individual> roulette_method(Population &population);
     Individual individual_giveaway(vector<Individual> &individuals, vector<float> &roulette, int &total_fit);
     vector<Individual> reproduct(Individual &individual_1, Individual &individual_2, bool two_children);

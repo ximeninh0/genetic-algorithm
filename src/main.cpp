@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-    int option, tx_reprod,tx_mut_indv,tx_mut_gene;
+    int option, tam_elite,tx_mut_indv,tx_mut_gene;
     vector<Gene> cities;
     Individual solution;
     Tools tools;
@@ -32,16 +32,15 @@ int main()
         case 1:
         cities = tools.PopulateCitiesWithRandomPoints(cities);
         break;
-        // 360 dividido pela quantidade de pontos
+        // 360 dividido pela quantidade de pontos x^2 + y^2 = r^2 | 2piR
         case 2: break;
     }
     
     for (Gene city : cities)
     city.print_gene();
     
-    Population population(cities[0], cities, 100);
-    cout << "Insira a taxa de reprodução: " << endl;
-    cin >> tx_reprod ;
+    cout << "Insira o Tamanho da Elite " << endl;
+    cin >> tam_elite ;
     
     cout << "Insira a taxa de mutação do indivíduo: " << endl;
     cin >> tx_mut_indv ;
@@ -49,8 +48,9 @@ int main()
     cout << "Insira a taxa de mutação do gene: " << endl;
     cin >> tx_mut_gene ;
     
-    GeneticAlgorithm genetic(tx_reprod,tx_mut_indv,tx_mut_gene);
-    solution = genetic.RunGeneticAlgorithim(population,100);
+    Population population(cities[0],cities,15,tam_elite);
+    GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
+    solution = genetic.RunGeneticAlgorithim(population,5);
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
     for (const auto& p : pairs) {

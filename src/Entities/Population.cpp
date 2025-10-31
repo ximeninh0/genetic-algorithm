@@ -14,57 +14,45 @@
 using namespace std;
 
 // Costrutor da população, realiza permutações aleatórias para formar as primeiras rotas
-Population::Population(Gene first_route_city, vector<Gene> cities, int size_p)
+Population::Population(Gene first_route_city, vector<Gene> cities, int size_p, int elitism_size)
 {
     this->size_p = size_p;
-    this->individuals.reserve(this->size_p * 2);
+    this->elitism_size = elitism_size;
     cities.erase(cities.begin());
     Tools tools;
 
     vector<Gene> initial_chromossome;
-    // cout << "Chegou" << endl;
     initial_chromossome = cities;
     int size = initial_chromossome.size();
     for (int indv_index = 0; indv_index < size_p; indv_index++)
     {
-        // cout << indv_index << endl;
         
         vector<Gene> new_indiv_chromo = initial_chromossome;
         
         for (int i = 0; i < initial_chromossome.size(); i++)
         {
-            // cout << "oi" <<i << endl;
             int random_index = tools.random_number(i, size - 1, 2213);
             
             Gene temp = new_indiv_chromo[random_index];
             new_indiv_chromo[random_index] = new_indiv_chromo[i];
             new_indiv_chromo[i] = temp;
-            // delete &temp;
         }
         
-        // cout << "1-tchau" << indv_index << endl;
-        // Individual i= new Individual(asdadsasd)
-        // cout << "2-tchau" << indv_index << endl;
-        // individual.set_generation(1);
-        // individual.set_index(indv_index + 1);
-        // individual.set_first_gene(first_route_city);
-        // individual.set_chromossome(new_indiv_chromo);
         Individual individual(new_indiv_chromo,indv_index + 1,1,first_route_city);
         individual.print_individual();
         this->individuals.push_back(individual);
-
-
-        cout << "3-tchau" << indv_index << endl;
         
     }
-    cout << this->individuals.size() << endl;
-    this->print_population();
-
     this->generation = 1;
 }
 
+Population::Population(int size_p, int generation, int elitism_size){
+    this->size_p = size_p;
+    this->generation = generation;
+    this->elitism_size = elitism_size;
+}
+
 Population::~Population(){
-    delete &individuals;
 }
 
 // Construtor vazio para aplicações do código
@@ -99,15 +87,16 @@ void Population::sort_individuals(){
 }
 
 // Getters e Setters
-int Population::get_index() { return index; }
-void Population::set_index(char new_index) { index = new_index; }
+int Population::get_generation() { return this->generation; }
+void Population::set_generation(int new_generation) { this->generation = new_generation; }
 
-int Population::get_generation() { return generation; }
-void Population::set_generation(char new_generation) { generation = new_generation; }
+int Population::get_elitism_size() { return this->elitism_size; }
+void Population::set_elitism_size(int elitism) { this->elitism_size = elitism; }
 
 vector<Individual> Population::get_individuals(){return individuals;}
 void Population::set_individuals(vector<Individual> indvs) {this->individuals = indvs; }
 
+void Population::clear_population() { this->individuals.clear(); }
 
 // Prints
 void Population::print_population()

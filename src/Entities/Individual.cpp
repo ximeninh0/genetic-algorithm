@@ -87,7 +87,7 @@ void Individual::print_individual()
     else cout << " | ";
 
     cout << get_first_gene().get_name() << " | ";
-    for (Gene gene : chromossome)
+    for (Gene &gene : chromossome)
     {
         cout << gene.get_name() << " | ";
     }    
