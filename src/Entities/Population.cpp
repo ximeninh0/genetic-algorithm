@@ -110,5 +110,8 @@ void Population::print_population()
     cout << "Debug" << endl;
 }
 
-
+vector<Individual>& Population::get_individuals_ref()
+{
+    return this->individuals;
+} 
 

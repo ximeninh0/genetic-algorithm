@@ -29,6 +29,6 @@ private:
 
 public:
     GeneticAlgorithm(int elite_size, int tx_mut_indv, int tx_mut_gene);
-    Individual RunGeneticAlgorithim(Population &population, int epochs);
+    Individual RunGeneticAlgorithim(Population &population, int epochs, int tournament_size);
 
 };
