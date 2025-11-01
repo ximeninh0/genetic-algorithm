@@ -30,39 +30,46 @@ int main()
     switch (option)
     {
         case 1:
-        cities = tools.PopulateCitiesWithRandomPoints(cities);
+        cities = tools.PopulateCitiesWithRandomPoints();
         break;
-        // 360 dividido pela quantidade de pontos x^2 + y^2 = r^2 | 2piR
-        case 2: break;
+        case 2:
+        cities = tools.PopulateCitiesinCircle();
+        break;
     }
     
+    cout << "Cidades: " << endl;
+
     for (Gene city : cities)
     city.print_gene();
     
-    // cout << "Insira o Tamanho da Elite " << endl;
-    // cin >> tam_elite ;
-    
-    // cout << "Insira o Tamanho da População " << endl;
-    // cin >> size_p ;
+    cout << "Insira o Tamanho da População " << endl;
+    cin >> size_p ;
 
-    // cout << "Insira a Qtd Epócas " << endl;
-    // cin >> epochs ;
+    do {
+        cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
+        cin >> tam_elite ;
+    } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
+
+    cout << "Insira a Qtd Epócas " << endl;
+    cin >> epochs ;
 
     // cout << "Insira a taxa de mutação do indivíduo: " << endl;
     // cin >> tx_mut_indv ;
     
-    // cout << "Insira a taxa de mutação do gene: " << endl;
-    // cin >> tx_mut_gene ;
-    tam_elite = 15;
-    size_p = 50;
-    epochs = 30;
-    tx_mut_indv = 70;
-    tx_mut_gene = 60;
+    cout << "Insira a taxa de mutação do gene: " << endl;
+    cin >> tx_mut_gene ;
 
+    if (cities.size() == 0) {
+        cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;
+        return 1; // Sai do programa com código de erro
+    }
     
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
     solution = genetic.RunGeneticAlgorithim(population,epochs);
+
+    cout << "Debug2" << endl;
+
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
     for (const auto& p : pairs) {
@@ -70,5 +77,8 @@ int main()
     }    
     tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
+
+    cout << "\n" << endl;
+    
     return 0;
 }
