@@ -23,6 +23,7 @@ public:
     void set_index(char new_index);
     int get_generation();
     vector<Gene> get_chromossome();
+    vector<Gene>& get_chromossome_ref();
     void set_chromossome(vector<Gene> chrom);
     void changeDNA(vector<Gene> &new_chrome);
     void set_generation(char new_generation);

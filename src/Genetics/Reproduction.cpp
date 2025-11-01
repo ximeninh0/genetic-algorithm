@@ -50,6 +50,7 @@ Population Reproduction::reproduct_population(Population &population)
 
         Individual& parent1 = this->tournament_selection(population, this->tournament_size);
         Individual& parent2 = this->tournament_selection(population, this->tournament_size);
+        // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
 
         this->reproduct(parent1, parent2, make_two, childrens);
 
@@ -192,7 +193,6 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
 
         if (!is_gene_in_chrom(gene, first_slice))
         {
-
             aux_queue.push(gene);
         }
     }
@@ -206,7 +206,6 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
 
         if (!first_slice.empty())
         {
-
             gene = first_slice.front();
 
             first_slice.pop();
@@ -226,9 +225,7 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
     // Insere o primeiro filho no vetor de retorno
 
     Individual first_child(f_children_chromossome, this->new_indv_index,
-
                            individual_1.get_generation() + 1,
-
                            individual_1.get_first_gene()
 
     );
@@ -245,12 +242,10 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
 
         for (int i = 0; i <= max_index; i++)
         {
-
             Gene gene = individual_2.get_chromossome()[i];
 
             if (!is_gene_in_chrom(gene, second_slice))
             {
-
                 aux_queue.push(gene);
             }
         }
@@ -262,17 +257,13 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
 
             if (!second_slice.empty())
             {
-
                 gene = second_slice.front();
-
                 second_slice.pop();
             }
 
             else
             {
-
                 gene = aux_queue.front();
-
                 aux_queue.pop();
             }
 

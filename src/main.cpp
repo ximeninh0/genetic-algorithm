@@ -42,26 +42,32 @@ int main()
     for (Gene city : cities)
     city.print_gene();
     
-    cout << "Insira o Tamanho da População " << endl;
-    cin >> size_p ;
+    // cout << "Insira o Tamanho da População " << endl;
+    // cin >> size_p ;
 
-    do {
-        cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
-        cin >> tam_elite ;
-    } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
+    // do {
+    //     cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
+    //     cin >> tam_elite ;
+    // } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
 
-    cout << "Insira a Qtd Epócas " << endl;
-    cin >> epochs ;
+    // cout << "Insira a Qtd Epócas " << endl;
+    // cin >> epochs ;
 
-    cout << "Insira a taxa de mutação do indivíduo: " << endl;
-    cin >> tx_mut_indv ;
+    // cout << "Insira a taxa de mutação do indivíduo: " << endl;
+    // cin >> tx_mut_indv ;
     
-    cout << "Insira a taxa de mutação do gene: " << endl;
-    cin >> tx_mut_gene ;
+    // cout << "Insira a taxa de mutação do gene: " << endl;
+    // cin >> tx_mut_gene ;
 
-    cout << "Insira o tamanho do torneio: " << endl;
-    cin >> tournament_size ;
+    // cout << "Insira o tamanho do torneio: " << endl;
+    // cin >> tournament_size ;
 
+    tam_elite = 5;
+    size_p = 33;
+    epochs = 500;
+    tx_mut_indv = 100;
+    tx_mut_gene = 80;
+    tournament_size = 4;
 
     if (cities.size() == 0) {
         cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;

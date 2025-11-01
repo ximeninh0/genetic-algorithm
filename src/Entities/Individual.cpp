@@ -73,6 +73,8 @@ int Individual::get_generation() { return generation; }
 void Individual::set_generation(char new_generation) { generation = new_generation; }
 
 vector<Gene> Individual::get_chromossome(){return this->chromossome;}
+vector<Gene>& Individual::get_chromossome_ref(){return this->chromossome;}
+
 void Individual::set_chromossome(vector<Gene> chrom){this->chromossome = chrom;}
 
 Gene Individual::get_first_gene(){return first_city;}
