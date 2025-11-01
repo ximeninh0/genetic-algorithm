@@ -53,8 +53,8 @@ int main()
     cout << "Insira a Qtd Epócas " << endl;
     cin >> epochs ;
 
-    // cout << "Insira a taxa de mutação do indivíduo: " << endl;
-    // cin >> tx_mut_indv ;
+    cout << "Insira a taxa de mutação do indivíduo: " << endl;
+    cin >> tx_mut_indv ;
     
     cout << "Insira a taxa de mutação do gene: " << endl;
     cin >> tx_mut_gene ;

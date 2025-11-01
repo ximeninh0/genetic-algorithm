@@ -39,14 +39,12 @@ Population Reproduction::reproduct_population(Population &population)
     {
         bool make_two = false;
 
-        vector<Individual> selected_couple;
-        this->roulette_method(population, selected_couple);
+        vector<Individual> selected_couple = this->roulette_method(population);
 
         if ((updated_population.get_size() - new_population_individuals.size()) > 1)
             make_two = true;
 
-        vector<Individual> childrens;
-        this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
+        vector<Individual> childrens = this->reproduct(selected_couple[0], selected_couple[1], make_two);
 
         if (make_two)
         {
@@ -62,15 +60,14 @@ Population Reproduction::reproduct_population(Population &population)
             this->new_indv_index++;
     }
     // this->add_children_to_pop(population, childs);
-    this->new_indv_index = 1; 
-    population.clear_population();
+    this->new_indv_index = 1;
+    // population.get_individuals().clear();
     updated_population.set_individuals(new_population_individuals);
-    new_population_individuals.clear();
     return updated_population;
 }
 
 // Método da roleta, escolhe indivíduos para reproduzir e tem mais chance de escolher indivíduos de melhor qualidade
-void Reproduction::roulette_method(Population &population, vector<Individual> &out_couple)
+vector<Individual> Reproduction::roulette_method(Population &population)
 {
     vector<Individual> individuals = population.get_individuals();
     vector<float> roulette;
@@ -84,8 +81,8 @@ void Reproduction::roulette_method(Population &population, vector<Individual> &o
         roulette.push_back(indv_slice);
     }
 
-    Individual individual_1 = individual_giveaway(individuals,roulette,total_fitness);
-    roulette.clear();
+    Individual individual_1 = individual_giveaway(individuals, roulette, total_fitness);
+    vector<float> roullet2;
     total_fitness = 0;
     for (Individual &indv : individuals)
         total_fitness += indv.get_fitness() * (-1);
@@ -93,7 +90,7 @@ void Reproduction::roulette_method(Population &population, vector<Individual> &o
     {
         float indv_fit = indv.get_fitness() * (-1);
         float indv_slice = (float)indv_fit / (float)total_fitness;
-        roulette.push_back(indv_slice);
+        roullet2.push_back(indv_slice);
     }
 
     Individual individual_2 = individual_giveaway(individuals, roullet2, total_fitness);
@@ -125,7 +122,8 @@ Individual Reproduction::individual_giveaway(vector<Individual> &individuals, ve
             return selected;
         }
     }
-    return individuals.back();
+
+    // return individuals[0];
 }
 
 // Adiciona os filhos para uma população, utilizada ao fim do algorimto de reprodução
@@ -136,7 +134,7 @@ void Reproduction::add_children_to_pop(Population &population, vector<Individual
 }
 
 // Lógica da reprodução, pega características do individuo 1 e mescla com as do indivíduo 2 gerando 1 ou 2 filhos a partir do filamento genético
-void Reproduction::reproduct(Individual &individual_1, Individual &individual_2, bool two_children, vector<Individual> &out_childrens)
+vector<Individual> Reproduction::reproduct(Individual &individual_1, Individual &individual_2, bool two_children)
 {
 
     Tools tools;
@@ -199,18 +197,21 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
         }
         f_children_chromossome.push_back(gene);
     }
-    
-    // Insere o primeiro filho no vetor de retorno 
-    Individual first_child(f_children_chromossome,this->new_indv_index,
-                           individual_1.get_generation()+1,
-                           individual_1.get_first_gene()
-                        );
 
-    out_childrens.push_back(first_child);
+    // Insere o primeiro filho no vetor de retorno
+    vector<Individual> childrens;
+    Individual first_child(f_children_chromossome, this->new_indv_index,
+                           individual_1.get_generation() + 1,
+                           individual_1.get_first_gene());
 
-    while (!aux_queue.empty()) aux_queue.pop();
-    
-    if(two_children){
+    childrens.push_back(first_child);
+
+    if (!two_children)
+    {
+        return childrens; // Caso a intenção seja retornar um filho somente, retorna o vetor com 1 filho
+    }
+    else
+    {
         // Caso contrário repete o mesmo processo levando em conta a segunda fatia recortada para formar o segundo filho
         for (int i = 0; i <= max_index; i++)
         {
@@ -237,11 +238,11 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
         }
 
         // Insere o segundo filho ao vetor resposta e retorna
-        Individual second_child(s_children_chromossome,this->new_indv_index + 1,
-                                individual_2.get_generation()+1, 
-                                individual_2.get_first_gene()
-                                );
-        out_childrens.push_back(second_child);
+        Individual second_child(s_children_chromossome, this->new_indv_index + 1,
+                                individual_2.get_generation() + 1,
+                                individual_2.get_first_gene());
+        childrens.push_back(second_child);
+        return childrens;
     }
 }
 
