@@ -23,10 +23,10 @@ GeneticAlgorithm::GeneticAlgorithm(int elite_size, int tx_mut_indv, int tx_mut_g
     this->mutation_gene_tx = tx_mut_gene;
 }
 
-Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int epochs)
+Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int epochs, int tournament_size)
 {
     // Inicialização dos objetos de mutação e reprodução, os valores passados no construtor são as taxas
-    Reproduction reproducion_tools(this->elite_size);
+    Reproduction reproducion_tools(this->elite_size, tournament_size);
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
 
     for(int i = 0; i < epochs; i++){

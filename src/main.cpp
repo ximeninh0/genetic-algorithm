@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-    int option, tam_elite,tx_mut_indv,tx_mut_gene,size_p,epochs;
+    int option, tam_elite, tx_mut_indv, tx_mut_gene, size_p, epochs, tournament_size;
     vector<Gene> cities;
     Individual solution;
     Tools tools;
@@ -59,6 +59,10 @@ int main()
     cout << "Insira a taxa de mutação do gene: " << endl;
     cin >> tx_mut_gene ;
 
+    cout << "Insira o tamanho do torneio: " << endl;
+    cin >> tournament_size ;
+
+
     if (cities.size() == 0) {
         cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;
         return 1; // Sai do programa com código de erro
@@ -66,7 +70,7 @@ int main()
     
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
-    solution = genetic.RunGeneticAlgorithim(population,epochs);
+    solution = genetic.RunGeneticAlgorithim(population,epochs, tournament_size);
 
     cout << "Debug2" << endl;
 

@@ -38,6 +38,7 @@ public:
     void set_individuals(vector<Individual> indvs);
     void pop_indv();
     vector<Individual> get_individuals();
+    vector<Individual>& get_individuals_ref();
     void remove_individual_by_index(int index);
     void sort_individuals();
     void clear_population();

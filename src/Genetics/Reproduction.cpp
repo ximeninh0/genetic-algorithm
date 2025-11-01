@@ -14,11 +14,12 @@
 using namespace std;
 
 // Construtor principal
-Reproduction::Reproduction(int elite_size)
+Reproduction::Reproduction(int elite_size, int tournament_size)
 {
     this->new_indv_index = 1;
     this->generation_index = 1;
     this->elite_size = elite_size;
+    this->tournament_size = tournament_size;
 }
 
 // Realiza a reprodução da população passada por rerefência
@@ -38,15 +39,19 @@ Population Reproduction::reproduct_population(Population &population)
     for (int i = 0; i < reproductions_amount; i++)
     {
         bool make_two = false;
-
-        vector<Individual> selected_couple;
-        this->roulette_method(population, selected_couple);
-
+        vector<Individual> childrens;
+        
+        // vector<Individual> selected_couple;
+        // this->roulette_method(population, selected_couple);
+        // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
+        
         if ((updated_population.get_size() - new_population_individuals.size()) > 1)
             make_two = true;
 
-        vector<Individual> childrens;
-        this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
+        Individual& parent1 = this->tournament_selection(population, this->tournament_size);
+        Individual& parent2 = this->tournament_selection(population, this->tournament_size);
+
+        this->reproduct(parent1, parent2, make_two, childrens);
 
         if (make_two)
         {
@@ -71,7 +76,6 @@ Population Reproduction::reproduct_population(Population &population)
 
 // Método da roleta, escolhe indivíduos para reproduzir e tem mais chance de escolher indivíduos de melhor qualidade
 void Reproduction::roulette_method(Population &population, vector<Individual> &out_couple)
-
 {
 
     vector<Individual> individuals = population.get_individuals();
@@ -151,7 +155,6 @@ void Reproduction::add_children_to_pop(Population &population, vector<Individual
 
 // Lógica da reprodução, pega características do individuo 1 e mescla com as do indivíduo 2 gerando 1 ou 2 filhos a partir do filamento genético
 void Reproduction::reproduct(Individual &individual_1, Individual &individual_2, bool two_children, vector<Individual> &out_childrens)
-
 {
 
     Tools tools;
@@ -281,7 +284,6 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
         Individual second_child(s_children_chromossome, this->new_indv_index + 1,
                                 individual_2.get_generation() + 1,
                                 individual_2.get_first_gene()
-
         );
         out_childrens.push_back(second_child);
     }
@@ -348,4 +350,46 @@ Population Reproduction::getBestHalf(Population &population)
     }
 
     return new_population;
+}
+
+
+Individual& Reproduction::tournament_selection(Population &Population, int tournament_size)
+{
+    // Tools tools;
+    // vector individuos = pop.get_individuos()
+    // int size_pop = individuos.size()
+
+    // int best_competidor_index = tools.random(0, size_pop -1)
+    // individual best_competidor = individuos[size_pop]
+
+    /*
+    for(i in tournament_size -1){
+        int competidor_index = num_aleatorio
+        indv competirdor individuos[competidor_index]
+
+        se competidor.fit > best_competidor.fit
+            best_competidor = competidor;
+    }
+
+    return best_competidor
+    */
+
+    Tools tools;
+
+    vector<Individual>& individuals = Population.get_individuals_ref();
+    int size_pop = individuals.size();
+
+    int best_competidor_index = tools.random_number(0, size_pop -1);
+
+    for (int i = 1; i < tournament_size; i++)
+    {
+        int competidor_index = tools.random_number(0, size_pop -1);
+
+        if (individuals[competidor_index].get_fitness() > individuals[best_competidor_index].get_fitness())
+        {
+            best_competidor_index = competidor_index;
+        }
+    }
+    
+    return individuals[best_competidor_index];
 }
