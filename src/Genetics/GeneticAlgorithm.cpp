@@ -39,7 +39,8 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         // cout << "----------ANTES DA MUTACAO----------" << endl;
         // population.print_population();
 
-        mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+        // mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+        population = mutation_tools.mutate_population(population);
 
         // cout << "----------DEPOIS DA MUTACAO----------" << endl;
         // population.print_population();

@@ -106,6 +106,8 @@ void Population::print_population()
         this->individuals[i].print_individual();
     }
     cout << "\n" << endl;
+    
+    cout << "Debug" << endl;
 }
 
 
