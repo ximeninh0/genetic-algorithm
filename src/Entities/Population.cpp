@@ -93,7 +93,32 @@ void Population::set_generation(int new_generation) { this->generation = new_gen
 int Population::get_elitism_size() { return this->elitism_size; }
 void Population::set_elitism_size(int elitism) { this->elitism_size = elitism; }
 
-vector<Individual> Population::get_individuals(){return individuals;}
+int Population::get_best_fit(){
+    int best_fit = individuals[0].get_fitness();
+    for(int i = 0; i < individuals.size(); i++){
+        if(individuals[i].get_fitness() > best_fit) best_fit = individuals[i].get_fitness();
+    }
+    return best_fit;
+}
+
+int Population::get_worst_fit(){
+    int worst_fit = 0;
+    for(int i = 0; i < individuals.size(); i++){
+        if(individuals[i].get_fitness() < worst_fit) worst_fit = individuals[i].get_fitness();
+    }
+    return worst_fit;
+}
+
+float Population::get_average_fit(){
+    int total = 0;
+    for(int i = 0; i < individuals.size(); i++){
+        total += individuals[i].get_fitness();
+    }
+    float average_fit = (float)total / (float)individuals.size();
+    return average_fit;
+}
+
+vector<Individual> Population::get_individuals(){ return individuals; }
 void Population::set_individuals(vector<Individual> indvs) {this->individuals = indvs; }
 
 void Population::clear_population() { this->individuals.clear(); }

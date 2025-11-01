@@ -31,11 +31,19 @@ public:
     void print_population();
     int get_generation();
     void set_generation(int new_generation);
+    
     int get_elitism_size();
     void set_elitism_size(int elitsm);
+
+    int get_best_fit();
+    int get_worst_fit();
+    float get_average_fit();
+
     int get_size();
     void add_individual(Individual new_individual);
+
     void set_individuals(vector<Individual> indvs);
+
     void pop_indv();
     vector<Individual> get_individuals();
     void remove_individual_by_index(int index);

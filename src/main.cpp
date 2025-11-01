@@ -53,11 +53,11 @@ int main()
     
     // cout << "Insira a taxa de mutação do gene: " << endl;
     // cin >> tx_mut_gene ;
-    tam_elite = 15;
-    size_p = 50;
-    epochs = 30;
-    tx_mut_indv = 70;
-    tx_mut_gene = 60;
+    tam_elite = 10;
+    size_p = 40;
+    epochs = 500;
+    tx_mut_indv = 100;
+    tx_mut_gene = 80;
 
     
     Population population(cities[0],cities,size_p,tam_elite);
@@ -65,9 +65,11 @@ int main()
     solution = genetic.RunGeneticAlgorithim(population,epochs);
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
+
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
-    }    
+    } 
+
     tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
     return 0;

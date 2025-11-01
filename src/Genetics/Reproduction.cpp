@@ -27,7 +27,7 @@ Population Reproduction::reproduct_population(Population &population)
     Population updated_population(population.get_size(), population.get_generation() + 1, population.get_elitism_size());
     vector<Individual> new_population_individuals;
 
-    //Adiciona os indivíduos da elite
+    // Adiciona os indivíduos da elite
     for(int i = 0; i < updated_population.get_elitism_size(); i++){
         new_population_individuals.push_back(population.get_individuals()[i]);
     }
