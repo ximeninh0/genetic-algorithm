@@ -76,9 +76,11 @@ int main()
 
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
+
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
-    }    
+    } 
+
     tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
 

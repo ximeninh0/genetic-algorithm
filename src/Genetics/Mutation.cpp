@@ -18,8 +18,7 @@ Population Mutation::mutate_population(Population &population){
     int mutations_amount = (this->mutation_indv_rate  / 100) * population.get_size();
 
     for(int i = 0; i < population.get_size(); i++){
-        int random_index = tools.random_number(0, population.get_size() - 1);
-
+        int random_index = tools.random_number(population.get_elitism_size() - 2, population.get_size());
         this->mutate_individual(indvs_from_population[random_index]);
     }
     population.clear_population();

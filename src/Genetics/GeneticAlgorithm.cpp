@@ -6,6 +6,8 @@
 #include <experimental/random>
 #include <random>
 #include <algorithm>
+#include <fstream>
+
 #include "Entities/Gene.h" 
 #include "Entities/Individual.h"
 #include "Entities/Point.h"
@@ -29,10 +31,18 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     Reproduction reproducion_tools(this->elite_size, tournament_size);
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
 
+    std::ofstream history("history.csv");
+    if (!history.is_open()) {
+        std::cerr << "Erro ao abrir arquivo de histórico.\n";
+    }
+
+    history << "generation,best,average,worst\n";
+
     for(int i = 0; i < epochs; i++){
+        // cout << "----------GERACAO--------------------------------" << i << endl;
         // cout << "----------ANTES DA REPRODUCAO----------" << endl;
-        // population.print_population();
         population.sort_individuals();
+        // population.print_population();
 
         population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
@@ -40,6 +50,13 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         // population.print_population();
 
         population = mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+
+        int best = population.get_best_fit();
+        float avg = population.get_average_fit();
+        int worst = population.get_worst_fit();
+
+        history << population.get_generation() << "," << best << "," << avg << "," << worst << "\n";
+        history.flush();
 
         // cout << "----------DEPOIS DA MUTACAO----------" << endl;
         // population.print_population();
@@ -54,8 +71,10 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
 
         // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
         // population.set_generation(population.get_generation() + 1);
-        cout << i << endl;
+        // cout << i << endl;
     }
+    history.close();
+
     population.sort_individuals();
     cout << "----------Ultima populacao----------" << endl;
 
