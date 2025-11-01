@@ -131,7 +131,12 @@ void Population::print_population()
         this->individuals[i].print_individual();
     }
     cout << "\n" << endl;
+    
+    cout << "Debug" << endl;
 }
 
-
+vector<Individual>& Population::get_individuals_ref()
+{
+    return this->individuals;
+} 
 

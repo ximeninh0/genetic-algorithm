@@ -27,29 +27,31 @@ Population Mutation::mutate_population(Population &population){
 }
 
 // Mutação do indivíduo com base na taxa de mutação dos genes, realiza a seleção dos genes de acordo com a taxa e aleatóriamente
+// Em Mutation.cpp
 void Mutation::mutate_individual(Individual &individual){
     Tools tools;
     vector<Gene> chromossome = individual.get_chromossome();
-
     int chrom_size = individual.get_chromossome().size();
+
+    // *** FIX 1: Adicionar um guarda ***
+    // Mutação não é possível se houver menos de 2 genes para trocar
+    if (chrom_size < 2) {
+        return;
+    }
+
     for(int i = 0; i < chrom_size; i++){
         int probability = tools.random_number(1,100);
         if(probability <= this->mutation_gene_rate){
             int random_second_index;
             do{
-                random_second_index = tools.random_number(1,chrom_size - 1);
-            } while(random_second_index == i);
+                // *** FIX 2: Corrigir o intervalo ***
+                random_second_index = tools.random_number(0, chrom_size - 1);
+            } while(random_second_index == i); // O loop do-while agora está seguro
+            
             Gene temp = chromossome[i];
             chromossome[i] = chromossome[random_second_index];
             chromossome[random_second_index] = temp;
-
-            // cout << "Mutacao!" 
-            // << individual.get_chromossome()[i].get_name() 
-            // << individual.get_chromossome()[random_second_index].get_name() 
-            // << endl;
         }
     }
     individual.changeDNA(chromossome);
-    // cout << "RESULTADO! " << endl;
-    // individual.print_individual();
 }

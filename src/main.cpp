@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-    int option, tam_elite,tx_mut_indv,tx_mut_gene,size_p,epochs;
+    int option, tam_elite, tx_mut_indv, tx_mut_gene, size_p, epochs, tournament_size;
     vector<Gene> cities;
     Individual solution;
     Tools tools;
@@ -30,39 +30,50 @@ int main()
     switch (option)
     {
         case 1:
-        cities = tools.PopulateCitiesWithRandomPoints(cities);
+        cities = tools.PopulateCitiesWithRandomPoints();
         break;
-        // 360 dividido pela quantidade de pontos x^2 + y^2 = r^2 | 2piR
-        case 2: break;
+        case 2:
+        cities = tools.PopulateCitiesinCircle();
+        break;
     }
     
+    cout << "Cidades: " << endl;
+
     for (Gene city : cities)
     city.print_gene();
     
-    // cout << "Insira o Tamanho da Elite " << endl;
-    // cin >> tam_elite ;
+    cout << "Insira o Tamanho da População " << endl;
+    cin >> size_p ;
+
+    do {
+        cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
+        cin >> tam_elite ;
+    } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
+
+    cout << "Insira a Qtd Epócas " << endl;
+    cin >> epochs ;
+
+    cout << "Insira a taxa de mutação do indivíduo: " << endl;
+    cin >> tx_mut_indv ;
     
-    // cout << "Insira o Tamanho da População " << endl;
-    // cin >> size_p ;
+    cout << "Insira a taxa de mutação do gene: " << endl;
+    cin >> tx_mut_gene ;
 
-    // cout << "Insira a Qtd Epócas " << endl;
-    // cin >> epochs ;
+    cout << "Insira o tamanho do torneio: " << endl;
+    cin >> tournament_size ;
 
-    // cout << "Insira a taxa de mutação do indivíduo: " << endl;
-    // cin >> tx_mut_indv ;
-    
-    // cout << "Insira a taxa de mutação do gene: " << endl;
-    // cin >> tx_mut_gene ;
-    tam_elite = 10;
-    size_p = 40;
-    epochs = 500;
-    tx_mut_indv = 100;
-    tx_mut_gene = 80;
 
+    if (cities.size() == 0) {
+        cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;
+        return 1; // Sai do programa com código de erro
+    }
     
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
-    solution = genetic.RunGeneticAlgorithim(population,epochs);
+    solution = genetic.RunGeneticAlgorithim(population,epochs, tournament_size);
+
+    cout << "Debug2" << endl;
+
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     cout << "tuplas: " << endl;
 
@@ -72,5 +83,8 @@ int main()
 
     tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
+
+    cout << "\n" << endl;
+    
     return 0;
 }

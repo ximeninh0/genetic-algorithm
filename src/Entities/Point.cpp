@@ -1,4 +1,4 @@
-#include "entities/Point.h"
+#include "Entities/Point.h"
 
 // Getters e Setters
 int Point::get_x() { return x; }
