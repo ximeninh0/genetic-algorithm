@@ -29,8 +29,10 @@ public:
     void set_generation(char new_generation);
     void add_gene(Gene new_gene);
     void remove_gene_by_name(char gene_name);
-    int get_fitness();
+    int get_fitness() const;
     Gene get_first_gene();
     void set_first_gene(Gene gene);
+
+    bool operator>(const Individual& other) const;
 
 };

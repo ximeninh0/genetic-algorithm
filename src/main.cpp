@@ -62,12 +62,13 @@ int main()
     // cout << "Insira o tamanho do torneio: " << endl;
     // cin >> tournament_size ;
 
-    tam_elite = 5;
+    tam_elite = 4;
     size_p = 33;
-    epochs = 500;
-    tx_mut_indv = 100;
+    epochs = 800;
+    tx_mut_indv = 1000;
     tx_mut_gene = 80;
-    tournament_size = 4;
+    tournament_size = 3;
+    
 
     if (cities.size() == 0) {
         cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;

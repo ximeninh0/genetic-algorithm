@@ -7,6 +7,7 @@
 #include <experimental/random>
 #include <random>
 #include <experimental/random>
+#include <set>
 #include "Entities/Population.h"
 #include "Genetics/Reproduction.h"
 #include "Entities/Individual.h"
@@ -40,19 +41,19 @@ Population Reproduction::reproduct_population(Population &population)
     {
         bool make_two = false;
         vector<Individual> childrens;
-        
+
         // vector<Individual> selected_couple;
         // this->roulette_method(population, selected_couple);
         // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
-        
+
         if ((updated_population.get_size() - new_population_individuals.size()) > 1)
             make_two = true;
 
-        Individual& parent1 = this->tournament_selection(population, this->tournament_size);
-        Individual& parent2 = this->tournament_selection(population, this->tournament_size);
+        Individual &parent1 = this->tournament_selection(population, this->tournament_size);
+        Individual &parent2 = this->tournament_selection(population, this->tournament_size);
         // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
 
-        this->reproduct(parent1, parent2, make_two, childrens);
+        this->reproduct_crossover_2_points(parent1, parent2, make_two, childrens);
 
         if (make_two)
         {
@@ -130,7 +131,7 @@ Individual Reproduction::individual_giveaway(vector<Individual> &individuals, ve
     int acc = 0;
     int slice_giveway = tools.random_number(1, total_fit);
 
-    for (int i = 0; i < (roulette.size()); i++)
+    for (size_t i = 0; i < (roulette.size()); i++)
     {
         float gene_range = roulette[i] * total_fit;
         acc += gene_range;
@@ -161,6 +162,15 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
     Tools tools;
 
     int max_index = individual_1.get_chromossome().size() - 1;
+
+    if (max_index < 2)
+    {
+        // Se não for possível, apenas retorna cópias dos pais
+        out_childrens.push_back(individual_1);
+        if (two_children)
+            out_childrens.push_back(individual_2);
+        return; // Sai da função
+    }
 
     int random_index = tools.random_number(1, max_index - 1);
 
@@ -274,8 +284,7 @@ void Reproduction::reproduct(Individual &individual_1, Individual &individual_2,
 
         Individual second_child(s_children_chromossome, this->new_indv_index + 1,
                                 individual_2.get_generation() + 1,
-                                individual_2.get_first_gene()
-        );
+                                individual_2.get_first_gene());
         out_childrens.push_back(second_child);
     }
 }
@@ -343,8 +352,7 @@ Population Reproduction::getBestHalf(Population &population)
     return new_population;
 }
 
-
-Individual& Reproduction::tournament_selection(Population &Population, int tournament_size)
+Individual &Reproduction::tournament_selection(Population &Population, int tournament_size)
 {
     // Tools tools;
     // vector individuos = pop.get_individuos()
@@ -367,20 +375,131 @@ Individual& Reproduction::tournament_selection(Population &Population, int tourn
 
     Tools tools;
 
-    vector<Individual>& individuals = Population.get_individuals_ref();
+    vector<Individual> &individuals = Population.get_individuals_ref();
     int size_pop = individuals.size();
 
-    int best_competidor_index = tools.random_number(0, size_pop -1);
+    int best_competidor_index = tools.random_number(0, size_pop - 1);
 
     for (int i = 1; i < tournament_size; i++)
     {
-        int competidor_index = tools.random_number(0, size_pop -1);
+        int competidor_index = tools.random_number(0, size_pop - 1);
 
         if (individuals[competidor_index].get_fitness() > individuals[best_competidor_index].get_fitness())
         {
             best_competidor_index = competidor_index;
         }
     }
-    
+
     return individuals[best_competidor_index];
+}
+
+void Reproduction::reproduct_crossover_2_points(Individual &individual_1, Individual &individual_2, bool two_children, vector<Individual> &out_childrens)
+{
+    Individual first_child = this->gen_child_by_crossover(individual_1, individual_2);
+
+    out_childrens.push_back(first_child);
+
+    if (two_children)
+    {
+        Individual second_child = this->gen_child_by_crossover(individual_2, individual_1);
+        out_childrens.push_back(second_child);
+    }
+}
+
+Individual Reproduction::gen_child_by_crossover(Individual &individual_1, Individual &individual_2)
+{
+    Tools tools;
+
+    int c_size = individual_1.get_chromossome().size();
+
+    int pos1;
+    int pos2;
+
+    do
+    {
+        pos1 = tools.random_number(0, c_size - 1);
+        pos2 = tools.random_number(0, c_size - 1);
+
+    } while (pos2 == pos1);
+
+    if (pos1 > pos2)
+    {
+        swap(pos1, pos2);
+    }
+
+    vector<Gene> first_children_chromossome(c_size);
+    std::set<char> genes_from_part;
+
+    // CORREÇÃO: Copia de pos1 até pos2 (INCLUSIVO)
+    for (int i = pos1; i <= pos2; i++) // <--- MUDANÇA AQUI
+    {
+        first_children_chromossome[i] = individual_1.get_chromossome()[i];
+        genes_from_part.insert(first_children_chromossome[i].get_name());
+    }
+
+    // CORREÇÃO: Começa em pos2 + 1 (que agora está correto)
+    int child_iter = (pos2 + 1) % c_size;
+    int parent_iter = (pos2 + 1) % c_size;
+
+    // CORREÇÃO: O loop while deve parar quando preencher o último slot (pos1 - 1)
+    while (child_iter != pos1)
+    {
+        Gene gene_from_parent2 = individual_2.get_chromossome()[parent_iter];
+
+        if (genes_from_part.find(gene_from_parent2.get_name()) == genes_from_part.end())
+        {
+            first_children_chromossome[child_iter] = gene_from_parent2;
+            child_iter = (child_iter + 1) % c_size;
+        }
+
+        parent_iter = (parent_iter + 1) % c_size;
+    }
+
+    Individual child(first_children_chromossome,
+                     this->new_indv_index,
+                     individual_1.get_generation() + 1,
+                     individual_1.get_first_gene());
+
+    return child;
+}
+
+Population Reproduction::create_offspring(Population &parent_population)
+{
+    // 1. Cria uma nova população de "filhos"
+    Population offspring_population(parent_population.get_size(),
+                                    parent_population.get_generation() + 1,
+                                    parent_population.get_elitism_size());
+
+    vector<Individual> offspring_individuals;
+
+    // 2. Loop ATÉ que a população de filhos esteja cheia (tamanho 'size_p')
+    while (offspring_individuals.size() < offspring_population.get_size())
+    {
+        bool make_two = false;
+        vector<Individual> childrens;
+
+        // Verifica se há espaço para dois filhos
+        if ((offspring_population.get_size() - offspring_individuals.size()) > 1)
+            make_two = true;
+
+        // 3. Seleciona pais da população PAI
+        Individual &parent1 = this->tournament_selection(parent_population, this->tournament_size);
+        Individual &parent2 = this->tournament_selection(parent_population, this->tournament_size);
+
+        // 4. Cria os filhos (usando sua função de crossover)
+        this->reproduct_crossover_2_points(parent1, parent2, make_two, childrens);
+
+        if (make_two)
+        {
+            offspring_individuals.push_back(childrens[0]);
+            offspring_individuals.push_back(childrens[1]);
+        }
+        else
+        {
+            offspring_individuals.push_back(childrens[0]);
+        }
+    }
+
+    offspring_population.set_individuals(offspring_individuals);
+    return offspring_population;
 }

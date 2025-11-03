@@ -51,4 +51,7 @@ public:
     void sort_individuals();
     void clear_population();
 
+    void combine(Population& offspring_population);
+    void truncate();
+
 };

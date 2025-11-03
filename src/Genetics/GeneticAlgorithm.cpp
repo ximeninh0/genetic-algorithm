@@ -39,39 +39,62 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     history << "generation,best,average,worst\n";
 
     for(int i = 0; i < epochs; i++){
-        // cout << "----------GERACAO--------------------------------" << i << endl;
-        // cout << "----------ANTES DA REPRODUCAO----------" << endl;
-        population.sort_individuals();
-        // population.print_population();
+        // // cout << "----------GERACAO--------------------------------" << i << endl;
+        // // cout << "----------ANTES DA REPRODUCAO----------" << endl;
+        // // population.sort_individuals();
+        // // population.print_population();
 
-        population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
+        // population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
-        // cout << "----------ANTES DA MUTACAO----------" << endl;
-        // population.print_population();
+        // // cout << "----------ANTES DA MUTACAO----------" << endl;
+        // // population.print_population();
 
-        population = mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+        // population = mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+        
+        // // cout << "----------DEPOIS DA MUTACAO----------" << endl;
+        // // population.print_population();
+        
+        // // population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
+        
+        // // cout << "----------DEPOIS DO SORT----------" << endl;
+        // // population.print_population();
+        
+        // while(population.get_individuals().size() > population.get_size())  // Realiza o ajuste populacional deixando apenas os de melhor qualidade
+        //     population.pop_indv();
+        
+        // // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
+        // // population.set_generation(population.get_generation() + 1);
+        // // cout << i << endl;
 
+
+
+        
+        // criar filhos
+        
+        Population offspring = reproducion_tools.create_offspring(population);
+        
+        // muta filhos
+        
+        offspring = mutation_tools.mutate_population(population);
+        
+        // combina filhos
+        
+        population.combine(offspring);
+        
+        // mata, trunca os filhos
+        
+        population.truncate();
+        
+        // atualiza geracao
+        
+        population.set_generation(population.get_generation() + 1);
+        
         int best = population.get_best_fit();
         float avg = population.get_average_fit();
         int worst = population.get_worst_fit();
 
         history << population.get_generation() << "," << best << "," << avg << "," << worst << "\n";
         history.flush();
-
-        // cout << "----------DEPOIS DA MUTACAO----------" << endl;
-        // population.print_population();
-        
-        // population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
-
-        // cout << "----------DEPOIS DO SORT----------" << endl;
-        // population.print_population();
-        
-        // while(population.get_individuals().size() > population.get_size())  // Realiza o ajuste populacional deixando apenas os de melhor qualidade
-        //     population.pop_indv();
-
-        // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
-        // population.set_generation(population.get_generation() + 1);
-        // cout << i << endl;
     }
     history.close();
 

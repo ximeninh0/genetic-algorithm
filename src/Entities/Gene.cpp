@@ -23,7 +23,7 @@ Gene::~Gene(){ }
 char Gene::get_name() { return name; }
 void Gene::set_name(char name) { this->name = name; }
 
-Point Gene::get_point() { return this->coordinates; }
+Point Gene::get_point() const { return this->coordinates; }
 void Gene::set_point(int x, int y)
 {
     this->coordinates.set_x(x);
