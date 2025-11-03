@@ -156,3 +156,26 @@ void Tools::save_generation(int gen, float bestFitness, const std::vector<std::p
 
     std::ofstream("data.json") << j.dump(4);
 }
+
+void Tools::save_base_json(vector<Gene> cities, const std::vector<std::pair<float, float>> &points)
+{
+    json j;
+    int i = 0;
+    for (auto &c : cities){
+        j["cities"].push_back({c.get_name(), {points[i].first, points[i].second}});
+        i++;
+    }
+
+    std::ofstream("data.json") << j.dump(4);
+}
+
+std::vector<std::pair<float, float>> Tools::cities_to_tuple_array(vector<Gene> cities)
+{
+    std::vector<std::pair<float, float>> result;
+    for (Gene gene : cities)
+    {
+        std::pair<float, float> point = {gene.get_point().get_x(), gene.get_point().get_y()};
+        result.push_back(point);
+    }
+    return result;
+}
