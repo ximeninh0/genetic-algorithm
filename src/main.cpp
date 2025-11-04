@@ -62,10 +62,10 @@ int main()
     // cout << "Insira o tamanho do torneio: " << endl;
     // cin >> tournament_size ;
 
-    tam_elite = 5;
-    size_p = 33;
-    epochs = 500;
-    tx_mut_indv = 100;
+    tam_elite = 3;
+    size_p = 40;
+    epochs = 300;
+    tx_mut_indv = 80;
     tx_mut_gene = 80;
     tournament_size = 4;
 

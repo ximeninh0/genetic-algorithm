@@ -1,58 +1,42 @@
 import json
-import time
-import tkinter as tk
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import pandas as pd
+import matplotlib.pyplot as plt
+from PIL import Image
+import io
 
-class GeneticUI:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Evolução do Algoritmo Genético")
+with open("data.json", "r") as f:
+    data = json.load(f)
 
-        # Configuração do gráfico
-        self.fig = Figure(figsize=(6, 4), dpi=100)
-        self.ax = self.fig.add_subplot(111)
-        self.ax.set_title("Fitness Médio por Geração")
-        self.ax.set_xlabel("Geração")
-        self.ax.set_ylabel("Fitness")
+city_pos = {}
+for code, xy in data["cities"]:
+    city_pos[ chr(code) ] = xy  # salva tipo: 'A': [12, 72]
 
-        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
-        self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+df = pd.read_csv("history.csv")
 
-        # Dados da simulação
-        self.generations = []
-        self.avg_fitness = []
+solution_index = df.last_valid_index()
+gen = df['generation'][solution_index]
+best = df['best'][solution_index]
+average = df['average'][solution_index]
+worst = df['worst'][solution_index]
+route = df['route'][solution_index]
 
-        self.update_graph()
+xs = [city_pos[c][0] for c in route]
+ys = [city_pos[c][1] for c in route]
 
-    def update_graph(self):
-        try:
-            with open("generation_data.json", "r") as f:
-                data = json.load(f)
+fig, ax = plt.subplots()
+ax.scatter(xs, ys)
+ax.plot(xs, ys)  # linha da rota
 
-            gen = data["generation"]
-            avg = data["avg_fitness"]
+# nome de cada cidade em cima do ponto
+for c in route:
+    ax.text(city_pos[c][0], city_pos[c][1], c)
 
-            # Atualiza apenas se for nova geração
-            if len(self.generations) == 0 or gen != self.generations[-1]:
-                self.generations.append(gen)
-                self.avg_fitness.append(avg)
+ax.set_title(f"Generation {gen} Best: {best}")
 
-                self.ax.clear()
-                self.ax.plot(self.generations, self.avg_fitness, color="blue")
-                self.ax.set_title("Fitness Médio por Geração")
-                self.ax.set_xlabel("Geração")
-                self.ax.set_ylabel("Fitness")
-                self.canvas.draw()
-        except FileNotFoundError:
-            pass
-        except json.JSONDecodeError:
-            pass
-
-        # Atualiza a cada 1 segundo
-        self.master.after(1000, self.update_graph)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GeneticUI(root)
-    root.mainloop()
+plt.title("Evolução do Fitness ao Longo das Gerações")
+plt.xlabel("Geração")
+plt.ylabel("Fitness")
+plt.legend()
+plt.grid(True)
+plt.show()
+# frames.append(Image.open(buf))
