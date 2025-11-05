@@ -19,8 +19,9 @@ frames = []
 
 # ===== 3) GENERATE FRAMES =====
 for i, row in df.iterrows():
+    if(i > 50 and i % 5 != 0):
+        continue
     route = list(row['route'])  # "AOPLT..." -> ['A','O','P','L','T',...]
-    
     xs = [city_pos[c][0] for c in route]
     ys = [city_pos[c][1] for c in route]
 
