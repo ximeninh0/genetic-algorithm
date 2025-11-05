@@ -52,12 +52,12 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints()
 
     int n, area;
 
-    do
-    {
+    // do
+    // {
         cout << "Insira a quantidade de pontos: " << endl;
         cin >> n;
         /* code */
-    } while (n > 26 || n <= 0 );
+    // } while (n > 26 || n <= 0 );
 
     cout << "Insira o raio da área de cobertura dos pontos: " << endl;
     cin >> area;
@@ -78,7 +78,7 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints()
             random_y = this->random_number((area * (-1)), area, 2213);
         } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2)); // Repete até que esteja dentro do raio da circunferência
 
-        char name = this->alfabeto[i % 26]; // Nomeia a cidade com letras do alfabeto
+        int name = i + 1; // Nomeia a cidade com letras do alfabeto
         cities.emplace_back(name, random_x, random_y);
     }
 
@@ -89,13 +89,16 @@ vector<Gene> Tools::PopulateCitiesinCircle()
 {
     std::vector<Gene> cities;
 
+    
     int n_points, Radius;
     cout << "Insira a quantidade de pontos: " << endl;
     cin >> n_points;
-
+    
     cout << "Insira o raio da circunferencia: " << endl;
     cin >> Radius;
-
+    
+    cities.clear();
+    cities.reserve(n_points);
     double angleStep = 2.0 * PI / n_points;
 
     for (int i = 0; i < n_points; i++)
@@ -105,9 +108,8 @@ vector<Gene> Tools::PopulateCitiesinCircle()
         double x = 0 + Radius * cos(currentAngle);
         double y = 0 + Radius * sin(currentAngle);
 
-        char name = this->alfabeto[i];
-        Gene new_city(name, x, y);
-        cities.push_back(new_city);
+        int name = i + 1;
+        cities.emplace_back(name, x, y);
     }
     
     return cities;
@@ -178,4 +180,31 @@ std::vector<std::pair<float, float>> Tools::cities_to_tuple_array(vector<Gene> c
         result.push_back(point);
     }
     return result;
+}
+
+
+void Tools::print_progress(int actual_epoch, int epochs){
+    int proportion = 100;
+    float rel = (float)((float)actual_epoch/(float)epochs) * (float)proportion;
+    int dif = proportion - rel;
+    cout << "\r";
+
+    cout << "|" ;
+
+    for(int i = 0; i < rel-1; i++)
+    {
+        cout << "=";
+
+    }
+
+        cout << ">";
+
+
+    for (int i = 0; i < dif; i++)
+    {
+        cout << " ";
+        
+    }
+    
+    cout << "| "  << rel << "%" << "\r" << flush;
 }

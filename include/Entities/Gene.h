@@ -5,16 +5,16 @@
 class Gene
 {
 private:
-    char name;
+    int name;
     Point coordinates;
 
 public:
     Gene();
     ~Gene();
-    Gene(char name, int x, int y);
+    Gene(int name, int x, int y);
     void print_gene();
-    char get_name();
-    void set_name(char new_name);
+    int get_name();
+    void set_name(int new_name);
     Point get_point() const;
     void set_point(int x, int y);
 };

@@ -37,4 +37,5 @@ public:
         vector<Gene> route, Gene first_point);
     std::vector<std::pair<float, float>> individual_to_tuple_array(vector<Gene> chromossome, Gene first_point);
     std::vector<std::pair<float, float>> cities_to_tuple_array(vector<Gene> cities);
+    void print_progress(int actual_epoch, int epochs);
 };

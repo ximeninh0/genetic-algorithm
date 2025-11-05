@@ -75,10 +75,10 @@ int main()
         break;
         
         case 2:
-            tam_elite = 2;
+            tam_elite = 4;
             size_p = 33;
-            epochs = 300;
-            tx_mut_indv = 80;
+            epochs = 500;
+            tx_mut_indv = 100;
             tx_mut_gene = 5;
             tournament_size = 4;
         break;

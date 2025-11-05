@@ -12,7 +12,7 @@ using namespace std;
 
 // Construtores
 Gene::Gene() {}
-Gene::Gene(char name, int x, int y)
+Gene::Gene(int name, int x, int y)
 {
     set_name(name);
     set_point(x, y);
@@ -20,8 +20,8 @@ Gene::Gene(char name, int x, int y)
 Gene::~Gene(){ }
 
 // Getters e Setters
-char Gene::get_name() { return name; }
-void Gene::set_name(char name) { this->name = name; }
+int Gene::get_name() { return name; }
+void Gene::set_name(int name) { this->name = name; }
 
 Point Gene::get_point() const { return this->coordinates; }
 void Gene::set_point(int x, int y)

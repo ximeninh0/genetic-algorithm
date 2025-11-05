@@ -40,6 +40,7 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     history << "generation,best,average,worst,route\n";
 
     for(int i = 0; i < epochs-1; i++){
+        tools.print_progress(i,epochs);
         // cout << "----------GERACAO--------------------------------" << i << endl;
         // cout << "----------ANTES DA REPRODUCAO----------" << endl;
         population.sort_individuals();
@@ -103,6 +104,7 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         history << population.get_individuals_ref()[0].get_first_gene().get_name(); 
         history << "\n";
         history.flush();
+
     }
     history.close();
 
@@ -112,4 +114,3 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     population.print_population();
     return population.get_individuals()[0];
 }
-
