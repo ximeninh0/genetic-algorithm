@@ -30,15 +30,16 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     // Inicialização dos objetos de mutação e reprodução, os valores passados no construtor são as taxas
     Reproduction reproducion_tools(this->elite_size, tournament_size);
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
+    Tools tools;
 
     std::ofstream history("history.csv");
     if (!history.is_open()) {
         std::cerr << "Erro ao abrir arquivo de histórico.\n";
     }
 
-    history << "generation,best,average,worst\n";
+    history << "generation,best,average,worst,route\n";
 
-    for(int i = 0; i < epochs; i++){
+    for(int i = 0; i < epochs-1; i++){
         // cout << "----------GERACAO--------------------------------" << i << endl;
         // cout << "----------ANTES DA REPRODUCAO----------" << endl;
         population.sort_individuals();
@@ -54,8 +55,17 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         int best = population.get_best_fit();
         float avg = population.get_average_fit();
         int worst = population.get_worst_fit();
+        std::vector<std::pair<float, float>> best_solution = tools.individual_to_tuple_array(
+            population.get_individuals_ref()[0].get_chromossome_ref(), 
+            population.get_individuals_ref()[0].get_first_gene()
+        );
 
-        history << population.get_generation() << "," << best << "," << avg << "," << worst << "\n";
+        // for (const auto& p : best_solution) history << " (" << p.first << ", " << p.second << ")";
+        history << population.get_generation() << "," << best << "," << avg << "," << worst << "," 
+        << population.get_individuals_ref()[0].get_first_gene().get_name(); 
+        for (Gene& g : population.get_individuals_ref()[0].get_chromossome_ref()) history << g.get_name();
+        history << population.get_individuals_ref()[0].get_first_gene().get_name(); 
+        history << "\n";
         history.flush();
 
         // cout << "----------DEPOIS DA MUTACAO----------" << endl;

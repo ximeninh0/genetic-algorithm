@@ -62,10 +62,10 @@ int main()
     // cout << "Insira o tamanho do torneio: " << endl;
     // cin >> tournament_size ;
 
-    tam_elite = 5;
-    size_p = 33;
-    epochs = 500;
-    tx_mut_indv = 100;
+    tam_elite = 3;
+    size_p = 40;
+    epochs = 300;
+    tx_mut_indv = 80;
     tx_mut_gene = 80;
     tournament_size = 4;
 
@@ -77,7 +77,8 @@ int main()
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
     solution = genetic.RunGeneticAlgorithim(population,epochs, tournament_size);
-
+    std::vector<std::pair<float,float>> cities_pairs = tools.cities_to_tuple_array(cities);
+    tools.save_base_json(cities, cities_pairs);
     cout << "Debug2" << endl;
 
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
@@ -85,9 +86,9 @@ int main()
 
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
-    } 
+    }
 
-    tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
+    // tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
 
     cout << "\n" << endl;
