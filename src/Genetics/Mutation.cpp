@@ -26,12 +26,12 @@ Population Mutation::mutate_population(Population &population)
         if (twins_count >= 3)
         {
             low_edge = 1;
-            high_edge = population.get_elitism_size();
+            // high_edge = population.get_elitism_size();
         }
         int random_index = tools.random_number(low_edge, high_edge);
         cout << twins_count << " " << random_index << endl;
-        // this->mutate_indv_by_rand_indx(indvs_from_population[random_index]);
-        this->mutate_indv_by_inverse(indvs_from_population[random_index]);
+        this->mutate_indv_by_rand_indx(indvs_from_population[random_index]);
+        // this->mutate_indv_by_inverse(indvs_from_population[random_index]);
     }
     population.clear_population();
     updated_population.set_individuals(indvs_from_population);
