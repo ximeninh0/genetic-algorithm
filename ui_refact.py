@@ -9,8 +9,7 @@ with open("data.json", "r") as f:
 
 city_pos = {}
 for code, xy in data["cities"]:
-    city_pos[ chr(code) ] = xy  # salva tipo: 'A': [12, 72]
-
+    city_pos[code] = xy  # salva tipo: 'A': [12, 72]
 df = pd.read_csv("history.csv")
 
 solution_index = df.last_valid_index()
@@ -20,6 +19,7 @@ average = df['average'][solution_index]
 worst = df['worst'][solution_index]
 route = df['route'][solution_index]
 
+route = list(map(int, route.split('-')))
 xs = [city_pos[c][0] for c in route]
 ys = [city_pos[c][1] for c in route]
 

@@ -45,8 +45,8 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         // cout << "----------ANTES DA REPRODUCAO----------" << endl;
         population.sort_individuals();
         // population.print_population();
-
         population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
+        cout <<"cgegou" << endl;
 
         // cout << "----------ANTES DA MUTACAO----------" << endl;
         // population.print_population();
@@ -99,8 +99,10 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         );
 
         history << population.get_generation() << "," << best << "," << avg << "," << worst << "," 
-        << population.get_individuals_ref()[0].get_first_gene().get_name(); 
-        for (Gene& g : population.get_individuals_ref()[0].get_chromossome_ref()) history << g.get_name();
+        << population.get_individuals_ref()[0].get_first_gene().get_name()<< "-"; 
+
+        for (Gene& g : population.get_individuals_ref()[0].get_chromossome_ref()) history << g.get_name() << "-";
+
         history << population.get_individuals_ref()[0].get_first_gene().get_name(); 
         history << "\n";
         history.flush();

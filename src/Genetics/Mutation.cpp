@@ -25,7 +25,8 @@ Population Mutation::mutate_population(Population &population)
 
         if (probability <= this->mutation_indv_rate)
         {
-            this->mutate_indv_by_inverse(indvs_from_population[i]);
+            // this->mutate_indv_by_inverse(indvs_from_population[i]);
+            this->mutate_indv_by_rand_indx(indvs_from_population[i]);
         }
     }
 

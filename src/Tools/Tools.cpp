@@ -189,7 +189,7 @@ void Tools::print_progress(int actual_epoch, int epochs){
     int dif = proportion - rel;
     cout << "\r";
 
-    cout << "|" ;
+    cout << "[" ;
 
     for(int i = 0; i < rel-1; i++)
     {
@@ -206,5 +206,5 @@ void Tools::print_progress(int actual_epoch, int epochs){
         
     }
     
-    cout << "| "  << rel << "%" << "\r" << flush;
+    cout << "] "  << rel << "%" << "\r" << flush;
 }
