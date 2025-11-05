@@ -13,29 +13,23 @@ Population Mutation::mutate_population(Population &population)
 {
 
     Tools tools;
-    vector<Individual> indvs_from_population = population.get_individuals();
-    Population updated_population(population.get_size(), population.get_generation(), population.get_elitism_size());
-    int mutations_amount = (this->mutation_indv_rate / 100) * population.get_size();
 
-    for (int i = 0; i < population.get_size(); i++)
+    vector<Individual>& indvs_from_population = population.get_individuals_ref();
+
+    int p_size = population.get_size();
+    int elite_size = population.get_elitism_size();
+
+    for (int i = elite_size; i < p_size; i++)
     {
-        int low_edge = population.get_elitism_size();
-        int high_edge = population.get_size();
+        int probability = tools.random_number(1, 100);
 
-        int twins_count = this->twins_score(population);
-        if (twins_count >= 3)
+        if (probability <= this->mutation_indv_rate)
         {
-            low_edge = 1;
-            // high_edge = population.get_elitism_size();
+            this->mutate_indv_by_inverse(indvs_from_population[i]);
         }
-        int random_index = tools.random_number(low_edge, high_edge);
-        cout << twins_count << " " << random_index << endl;
-        this->mutate_indv_by_rand_indx(indvs_from_population[random_index]);
-        // this->mutate_indv_by_inverse(indvs_from_population[random_index]);
     }
-    population.clear_population();
-    updated_population.set_individuals(indvs_from_population);
-    return updated_population;
+
+    return population;
 }
 
 // Mutação do indivíduo com base na taxa de mutação dos genes, realiza a seleção dos genes de acordo com a taxa e aleatóriamente
@@ -75,15 +69,37 @@ void Mutation::mutate_indv_by_rand_indx(Individual &individual)
 
 void Mutation::mutate_indv_by_inverse(Individual &individual)
 {
+    // vector<Gene> &chromossome = individual.get_chromossome_ref();
+    // vector<Gene> new_chromossome;
+
+    // for (int i = chromossome.size() - 1; i >= 0; i--)
+    // {
+    //     new_chromossome.push_back(chromossome[i]);
+    // }
+
+    // individual.changeDNA(new_chromossome);
+
+    Tools tools;
+
     vector<Gene> &chromossome = individual.get_chromossome_ref();
-    vector<Gene> new_chromossome;
 
-    for (int i = chromossome.size() - 1; i >= 0; i--)
+    int c_size = chromossome.size();
+
+    if (c_size < 2)
+        return;
+
+    int pos1;
+    int pos2;
+    do
     {
-        new_chromossome.push_back(chromossome[i]);
-    }
+        pos1 = tools.random_number(0, c_size - 1);
+        pos2 = tools.random_number(0, c_size - 1);
+    } while (pos1 == pos2);
 
-    individual.changeDNA(new_chromossome);
+    if (pos1 > pos2)
+        swap(pos1, pos2);
+
+    reverse(chromossome.begin() + pos1, chromossome.begin() + pos2 + 1);
 }
 
 int Mutation::twins_score(Population &population)

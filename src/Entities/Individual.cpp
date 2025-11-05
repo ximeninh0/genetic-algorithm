@@ -35,26 +35,39 @@ void Individual::changeDNA(vector<Gene> &new_chrome){
 }
 
 // Retorna a qualidade do indivíduo
-int Individual::get_fitness()
+int Individual::get_fitness() const
 {
+    // Se o cromossomo estiver vazio (ex: n=1 cidade), a rota é A->A.
+    // O fitness (distância) é 0.
+    if (chromossome.empty())
+    {
+        return 0;
+    }
+
     int fitness = 0;
     Tools tools;
-    for (int i = 0; i < chromossome.size() - 1; i++)
+
+    // 1. "Partida": Calcula a distância da first_city até o primeiro gene
+    fitness -= tools.weight(this->first_city.get_point(), chromossome[0].get_point());
+
+    // 2. "Meio": Calcula a distância entre todos os genes do cromossomo
+    // (ex: G0->G1, G1->G2, G2->G3, ...)
+    for (size_t i = 0; i < chromossome.size() - 1; i++)
     {
-        if (i != 0 && i != (chromossome.size() - 1))
-            fitness -= tools.weight(chromossome[i].get_point(), chromossome[i + 1].get_point());
-        else if (i == 0)
-            fitness -= tools.weight(this->first_city.get_point(), chromossome[i].get_point());
-            else    
-            fitness -= tools.weight(chromossome[i].get_point(), this->first_city.get_point());
-        }        
+        fitness -= tools.weight(chromossome[i].get_point(), chromossome[i + 1].get_point());
+    }
+
+    // 3. "Volta": Calcula a distância do último gene (chromossome.back())
+    // de volta para a first_city
+    fitness -= tools.weight(chromossome.back().get_point(), this->first_city.get_point());
+
     return fitness;
 }
 
 // Remove um gene pelo nome
 void Individual::remove_gene_by_name(char gene_name)
 {
-    for (int i = 0; i < chromossome.size(); i++)
+    for (size_t i = 0; i < chromossome.size(); i++)
     {
         if (chromossome[i].get_name() == gene_name)
             chromossome.erase(chromossome.begin() + i);
@@ -97,3 +110,9 @@ void Individual::print_individual()
     cout << " Fit: " << get_fitness();
     cout << endl;
 }    
+
+bool Individual::operator>(const Individual& other) const
+{
+
+    return this->get_fitness() > other.get_fitness();
+}

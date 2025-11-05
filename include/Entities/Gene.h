@@ -15,6 +15,6 @@ public:
     void print_gene();
     char get_name();
     void set_name(char new_name);
-    Point get_point();
+    Point get_point() const;
     void set_point(int x, int y);
 };

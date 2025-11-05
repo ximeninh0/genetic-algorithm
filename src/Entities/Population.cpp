@@ -29,7 +29,7 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p, i
         
         vector<Gene> new_indiv_chromo = initial_chromossome;
         
-        for (int i = 0; i < initial_chromossome.size(); i++)
+        for (size_t i = 0; i < initial_chromossome.size(); i++)
         {
             int random_index = tools.random_number(i, size - 1, 2213);
             
@@ -73,17 +73,19 @@ void Population::pop_indv(){
 
 // Ordena os indivíduos com base na qualidade (do melhor pro pior) !!!== APLICAR QUICK SORT ==!!!
 void Population::sort_individuals(){
-    vector<Individual> individuals = this->get_individuals();
-    for (int i = 0; i < individuals.size(); i++){
-        for(int j = i; j < individuals.size(); j++){
-            if(individuals[j].get_fitness() > individuals[i].get_fitness()){
-                Individual temp = individuals[j];
-                individuals[j] = individuals[i];
-                individuals[i] = temp;
-            }
-        }
-    }
-    this->individuals = individuals;
+    // vector<Individual> individuals = this->get_individuals();
+    // for (int i = 0; i < individuals.size(); i++){
+    //     for(int j = i; j < individuals.size(); j++){
+    //         if(individuals[j].get_fitness() > individuals[i].get_fitness()){
+    //             Individual temp = individuals[j];
+    //             individuals[j] = individuals[i];
+    //             individuals[i] = temp;
+    //         }
+    //     }
+    // }
+    // this->individuals = individuals;
+
+    sort(this->individuals.begin(), this->individuals.end(), greater());
 }
 
 // Getters e Setters
@@ -95,7 +97,7 @@ void Population::set_elitism_size(int elitism) { this->elitism_size = elitism; }
 
 int Population::get_best_fit(){
     int best_fit = individuals[0].get_fitness();
-    for(int i = 0; i < individuals.size(); i++){
+    for(size_t i = 0; i < individuals.size(); i++){
         if(individuals[i].get_fitness() > best_fit) best_fit = individuals[i].get_fitness();
     }
     return best_fit;
@@ -103,7 +105,7 @@ int Population::get_best_fit(){
 
 int Population::get_worst_fit(){
     int worst_fit = 0;
-    for(int i = 0; i < individuals.size(); i++){
+    for(size_t i = 0; i < individuals.size(); i++){
         if(individuals[i].get_fitness() < worst_fit) worst_fit = individuals[i].get_fitness();
     }
     return worst_fit;
@@ -111,7 +113,7 @@ int Population::get_worst_fit(){
 
 float Population::get_average_fit(){
     int total = 0;
-    for(int i = 0; i < individuals.size(); i++){
+    for(size_t i = 0; i < individuals.size(); i++){
         total += individuals[i].get_fitness();
     }
     float average_fit = (float)total / (float)individuals.size();
@@ -140,3 +142,23 @@ vector<Individual>& Population::get_individuals_ref()
     return this->individuals;
 } 
 
+void Population::combine(Population& offspring_population)
+{
+    // Pega os indivíduos da população de filhos
+    vector<Individual>& offspring_indvs = offspring_population.get_individuals_ref();
+
+    // Adiciona (anexa) todos os filhos ao final do vetor 'this->individuals'
+    this->individuals.insert(this->individuals.end(), 
+                             offspring_indvs.begin(), 
+                             offspring_indvs.end());
+}
+
+void Population::truncate()
+{
+    // 1. Ordena o pool combinado (Pais + Filhos) do melhor para o pior
+    //    (Sua função sort_individuals já faz isso)
+    this->sort_individuals();
+
+    // 2. Corta o vetor, mantendo apenas os 'size_p' melhores indivíduos
+    this->individuals.resize(this->size_p);
+}

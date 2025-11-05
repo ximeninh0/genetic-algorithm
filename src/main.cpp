@@ -6,7 +6,7 @@
 #include <experimental/random>
 #include <random>
 #include <algorithm>
-#include "Entities/Gene.h" 
+#include "Entities/Gene.h"
 #include "Entities/Individual.h"
 #include "Entities/Point.h"
 #include "Entities/Population.h"
@@ -17,7 +17,6 @@ using namespace std;
 
 // g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp src/Genetics/*.cpp -o main
 
-
 int main()
 {
     int option, tam_elite, tx_mut_indv, tx_mut_gene, size_p, epochs, tournament_size;
@@ -25,18 +24,18 @@ int main()
     Individual solution;
     Tools tools;
     tools.header();
-    
+
     cin >> option;
     switch (option)
     {
-        case 1:
+    case 1:
         cities = tools.PopulateCitiesWithRandomPoints();
         break;
-        case 2:
+    case 2:
         cities = tools.PopulateCitiesinCircle();
         break;
     }
-    
+
     cout << "Cidades: " << endl;
 
     if (cities.size() == 0) {
@@ -103,6 +102,6 @@ int main()
     // tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
     cout << "\n" << endl;
-    
+
     return 0;
 }
