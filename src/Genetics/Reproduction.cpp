@@ -35,15 +35,16 @@ Population Reproduction::reproduct_population(Population &population)
     {
         new_population_individuals.push_back(population.get_individuals()[i]);
     }
-
+    vector<Individual> childrens;
+    vector<Individual> selected_couple;
+    selected_couple.reserve(2);
+    childrens.reserve(2);
+    cout << "achegou2" <<endl;
     int reproductions_amount = updated_population.get_size() - updated_population.get_elitism_size();
     for (int i = 0; i < reproductions_amount; i++)
     {
         bool make_two = false;
-        vector<Individual> childrens;
         
-        vector<Individual> selected_couple;
-        selected_couple.reserve(2);
         
         if ((updated_population.get_size() - new_population_individuals.size()) > 1)
         make_two = true;
@@ -51,7 +52,7 @@ Population Reproduction::reproduct_population(Population &population)
         this->roulette_method(population, selected_couple);
         // selected_couple[0] = this->tournament_selection(population, this->tournament_size);
         // selected_couple[1] = this->tournament_selection(population, this->tournament_size);
-
+        // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
         this->reproduct_crossover_2_points(selected_couple[0], selected_couple[1], make_two, childrens);
 
         if (make_two)

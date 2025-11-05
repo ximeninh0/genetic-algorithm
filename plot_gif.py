@@ -10,7 +10,7 @@ with open("data.json", "r") as f:
 
 city_pos = {}
 for code, xy in data["cities"]:
-    city_pos[ chr(code) ] = xy  # salva tipo: 'A': [12, 72]
+    city_pos[ code ] = xy  # salva tipo: 'A': [12, 72]
 
 # ===== 2) LOAD CSV =====
 df = pd.read_csv("history.csv")
@@ -21,7 +21,11 @@ frames = []
 for i, row in df.iterrows():
     if(i > 50 and i % 5 != 0):
         continue
-    route = list(row['route'])  # "AOPLT..." -> ['A','O','P','L','T',...]
+
+    route = row['route']  # "AOPLT..." -> ['A','O','P','L','T',...]
+    route = list(map(int, route.split('-')))
+    # print(route)
+
     xs = [city_pos[c][0] for c in route]
     ys = [city_pos[c][1] for c in route]
 

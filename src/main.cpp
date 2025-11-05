@@ -76,8 +76,8 @@ int main()
         
         case 2:
             tam_elite = 4;
-            size_p = 33;
-            epochs = 500;
+            size_p = 5;
+            epochs = 1000;
             tx_mut_indv = 100;
             tx_mut_gene = 5;
             tournament_size = 4;
