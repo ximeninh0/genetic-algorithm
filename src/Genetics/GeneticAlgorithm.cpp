@@ -30,17 +30,16 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
     // Inicialização dos objetos de mutação e reprodução, os valores passados no construtor são as taxas
     Reproduction reproducion_tools(this->elite_size, tournament_size);
     Mutation mutation_tools(this->mutation_indv_tx,this->mutation_gene_tx);
+    Tools tools;
 
     std::ofstream history("history.csv");
     if (!history.is_open()) {
         std::cerr << "Erro ao abrir arquivo de histórico.\n";
     }
 
-    Tools tools;
-
     history << "generation,best,average,worst,route\n";
 
-    for(int i = 0; i < epochs -1; i++){
+    for(int i = 0; i < epochs-1; i++){
         // cout << "----------GERACAO--------------------------------" << i << endl;
         // cout << "----------ANTES DA REPRODUCAO----------" << endl;
         population.sort_individuals();

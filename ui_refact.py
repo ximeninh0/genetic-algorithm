@@ -33,7 +33,7 @@ for c in route:
 
 ax.set_title(f"Generation {gen} Best: {best}")
 
-plt.title("Evolução do Fitness ao Longo das Gerações")
+plt.title(f"Geração: {gen} Fit: {best}")
 plt.xlabel("Geração")
 plt.ylabel("Fitness")
 plt.legend()
