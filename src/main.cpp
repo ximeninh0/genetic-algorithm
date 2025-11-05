@@ -39,50 +39,62 @@ int main()
     
     cout << "Cidades: " << endl;
 
-    for (Gene city : cities)
-    city.print_gene();
-    
-    // cout << "Insira o Tamanho da População " << endl;
-    // cin >> size_p ;
-
-    // do {
-    //     cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
-    //     cin >> tam_elite ;
-    // } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
-
-    // cout << "Insira a Qtd Epócas " << endl;
-    // cin >> epochs ;
-
-    // cout << "Insira a taxa de mutação do indivíduo: " << endl;
-    // cin >> tx_mut_indv ;
-    
-    // cout << "Insira a taxa de mutação do gene: " << endl;
-    // cin >> tx_mut_gene ;
-
-    // cout << "Insira o tamanho do torneio: " << endl;
-    // cin >> tournament_size ;
-
-    tam_elite = 3;
-    size_p = 40;
-    epochs = 300;
-    tx_mut_indv = 80;
-    tx_mut_gene = 80;
-    tournament_size = 4;
-
     if (cities.size() == 0) {
         cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;
         return 1; // Sai do programa com código de erro
     }
     
+    for (Gene city : cities)
+    city.print_gene();
+
+    cout << "[1] Inserir parâmetros manualmente: " << endl;
+    cout << "[2] Utilizar parâmetros predefinidos: " << endl;
+    cin >> option;
+
+    switch (option)
+    {
+        case 1:
+            cout << "Insira o Tamanho da População " << endl;
+            cin >> size_p ;
+
+            do {
+                cout << "Insira o Tamanho da Elite (deve ser menor que " << size_p << ")" << endl;
+                cin >> tam_elite ;
+            } while (tam_elite >= size_p); // Força tam_elite a ser menor que size_p
+
+            cout << "Insira a Qtd Epócas " << endl;
+            cin >> epochs ;
+
+            cout << "Insira a taxa de mutação do indivíduo: " << endl;
+            cin >> tx_mut_indv ;
+            
+            cout << "Insira a taxa de mutação do gene: " << endl;
+            cin >> tx_mut_gene ;
+
+            cout << "Insira o tamanho do torneio: " << endl;
+            cin >> tournament_size ;
+        break;
+        
+        case 2:
+            tam_elite = 2;
+            size_p = 33;
+            epochs = 300;
+            tx_mut_indv = 80;
+            tx_mut_gene = 5;
+            tournament_size = 4;
+        break;
+    }
+
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
+
     solution = genetic.RunGeneticAlgorithim(population,epochs, tournament_size);
+
     std::vector<std::pair<float,float>> cities_pairs = tools.cities_to_tuple_array(cities);
     tools.save_base_json(cities, cities_pairs);
-    cout << "Debug2" << endl;
 
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
-    cout << "tuplas: " << endl;
+    // cout << "tuplas: " << endl;
 
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
@@ -90,7 +102,6 @@ int main()
 
     // tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
-
     cout << "\n" << endl;
     
     return 0;
