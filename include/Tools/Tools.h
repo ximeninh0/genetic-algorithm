@@ -36,4 +36,6 @@ public:
     void save_generation(int gen, float bestFitness, const std::vector<std::pair<float, float>> &points,
                          vector<Gene> route, Gene first_point);
     std::vector<std::pair<float, float>> individual_to_tuple_array(vector<Gene> chromossome, Gene first_point);
+    std::vector<std::pair<float, float>> cities_to_tuple_array(vector<Gene> cities);
+    void save_base_json(vector<Gene> cities, const std::vector<std::pair<float, float>> &points);
 };

@@ -19,7 +19,7 @@ Population Mutation::mutate_population(Population &population)
     int p_size = population.get_size();
     int elite_size = population.get_elitism_size();
 
-    for (int i = 0; i < p_size; i++)
+    for (int i = elite_size; i < p_size; i++)
     {
         int probability = tools.random_number(1, 100);
 

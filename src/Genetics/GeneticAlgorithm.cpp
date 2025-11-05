@@ -36,64 +36,73 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         std::cerr << "Erro ao abrir arquivo de histórico.\n";
     }
 
-    history << "generation,best,average,worst\n";
+    Tools tools;
 
-    for(int i = 0; i < epochs; i++){
-        // // cout << "----------GERACAO--------------------------------" << i << endl;
-        // // cout << "----------ANTES DA REPRODUCAO----------" << endl;
-        // // population.sort_individuals();
-        // // population.print_population();
+    history << "generation,best,average,worst,route\n";
 
-        // population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
+    for(int i = 0; i < epochs -1; i++){
+        // cout << "----------GERACAO--------------------------------" << i << endl;
+        // cout << "----------ANTES DA REPRODUCAO----------" << endl;
+        population.sort_individuals();
+        // population.print_population();
 
-        // // cout << "----------ANTES DA MUTACAO----------" << endl;
-        // // population.print_population();
+        population = reproducion_tools.reproduct_population(population);     // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
-        // population = mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
+        // cout << "----------ANTES DA MUTACAO----------" << endl;
+        // population.print_population();
+
+        population = mutation_tools.mutate_population(population);           // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
         
-        // // cout << "----------DEPOIS DA MUTACAO----------" << endl;
-        // // population.print_population();
+        // cout << "----------DEPOIS DA MUTACAO----------" << endl;
+        // population.print_population();
         
-        // // population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
+        // population.sort_individuals();                          // Ordena os indivíduos com base na qualidade
         
-        // // cout << "----------DEPOIS DO SORT----------" << endl;
-        // // population.print_population();
+        // cout << "----------DEPOIS DO SORT----------" << endl;
+        // population.print_population();
         
-        // while(population.get_individuals().size() > population.get_size())  // Realiza o ajuste populacional deixando apenas os de melhor qualidade
-        //     population.pop_indv();
+        while(population.get_individuals().size() > population.get_size())  // Realiza o ajuste populacional deixando apenas os de melhor qualidade
+            population.pop_indv();
         
-        // // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
-        // // population.set_generation(population.get_generation() + 1);
-        // // cout << i << endl;
+        // cout << "----------DEPOIS DA ANIQUILAÇÃO----------" << endl;
+        // population.set_generation(population.get_generation() + 1);
+        // cout << i << endl;
 
 
 
         
-        // criar filhos
+        // // criar filhos
         
-        Population offspring = reproducion_tools.create_offspring(population);
+        // Population offspring = reproducion_tools.create_offspring(population);
         
-        // muta filhos
+        // // muta filhos
         
-        offspring = mutation_tools.mutate_population(population);
+        // offspring = mutation_tools.mutate_population(population);
         
-        // combina filhos
+        // // combina filhos
         
-        population.combine(offspring);
+        // population.combine(offspring);
         
-        // mata, trunca os filhos
+        // // mata, trunca os filhos
         
-        population.truncate();
+        // population.truncate();
         
-        // atualiza geracao
+        // // atualiza geracao
         
-        population.set_generation(population.get_generation() + 1);
         
         int best = population.get_best_fit();
         float avg = population.get_average_fit();
         int worst = population.get_worst_fit();
+        std::vector<std::pair<float, float>> best_solution = tools.individual_to_tuple_array(
+            population.get_individuals_ref()[0].get_chromossome_ref(), 
+            population.get_individuals_ref()[0].get_first_gene()
+        );
 
-        history << population.get_generation() << "," << best << "," << avg << "," << worst << "\n";
+        history << population.get_generation() << "," << best << "," << avg << "," << worst << "," 
+        << population.get_individuals_ref()[0].get_first_gene().get_name(); 
+        for (Gene& g : population.get_individuals_ref()[0].get_chromossome_ref()) history << g.get_name();
+        history << population.get_individuals_ref()[0].get_first_gene().get_name(); 
+        history << "\n";
         history.flush();
     }
     history.close();

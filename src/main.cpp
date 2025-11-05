@@ -6,7 +6,7 @@
 #include <experimental/random>
 #include <random>
 #include <algorithm>
-#include "Entities/Gene.h" 
+#include "Entities/Gene.h"
 #include "Entities/Individual.h"
 #include "Entities/Point.h"
 #include "Entities/Population.h"
@@ -17,7 +17,6 @@ using namespace std;
 
 // g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp src/Genetics/*.cpp -o main
 
-
 int main()
 {
     int option, tam_elite, tx_mut_indv, tx_mut_gene, size_p, epochs, tournament_size;
@@ -25,23 +24,23 @@ int main()
     Individual solution;
     Tools tools;
     tools.header();
-    
+
     cin >> option;
     switch (option)
     {
-        case 1:
+    case 1:
         cities = tools.PopulateCitiesWithRandomPoints();
         break;
-        case 2:
+    case 2:
         cities = tools.PopulateCitiesinCircle();
         break;
     }
-    
+
     cout << "Cidades: " << endl;
 
     for (Gene city : cities)
-    city.print_gene();
-    
+        city.print_gene();
+
     // cout << "Insira o Tamanho da População " << endl;
     // cin >> size_p ;
 
@@ -55,7 +54,7 @@ int main()
 
     // cout << "Insira a taxa de mutação do indivíduo: " << endl;
     // cin >> tx_mut_indv ;
-    
+
     // cout << "Insira a taxa de mutação do gene: " << endl;
     // cin >> tx_mut_gene ;
 
@@ -68,17 +67,18 @@ int main()
     tx_mut_indv = 1000;
     tx_mut_gene = 80;
     tournament_size = 3;
-    
 
-    if (cities.size() == 0) {
+    if (cities.size() == 0)
+    {
         cout << "Nenhuma cidade foi gerada. Encerrando o programa." << endl;
         return 1; // Sai do programa com código de erro
     }
-    
+
     Population population(cities[0],cities,size_p,tam_elite);
     GeneticAlgorithm genetic(tam_elite,tx_mut_indv,tx_mut_gene);
     solution = genetic.RunGeneticAlgorithim(population,epochs, tournament_size);
-
+    std::vector<std::pair<float,float>> cities_pairs = tools.cities_to_tuple_array(cities);
+    tools.save_base_json(cities, cities_pairs);
     cout << "Debug2" << endl;
 
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
@@ -86,12 +86,12 @@ int main()
 
     for (const auto& p : pairs) {
         std::cout << "(" << p.first << ", " << p.second << ")\n";
-    } 
+    }
 
-    tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
+    // tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
 
     cout << "\n" << endl;
-    
+
     return 0;
 }
