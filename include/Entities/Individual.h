@@ -9,6 +9,8 @@
 class Individual
 {
 private:
+    mutable int cache_fitness;
+    mutable bool fitness_is_dirty;
     int index;
     int generation;
     vector<Gene> chromossome;
@@ -35,4 +37,5 @@ public:
 
     bool operator>(const Individual& other) const;
 
+    void set_dirty_fitness();
 };

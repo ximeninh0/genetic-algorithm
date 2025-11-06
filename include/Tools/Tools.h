@@ -31,7 +31,7 @@ public:
     vector<Gene> PopulateCitiesWithRandomPoints();
     vector<Gene> PopulateCitiesinCircle();
     int random_number(int n1, int n2);
-    int random_number(int n1, int n2, int seed);
+    int false_random_number(int n1, int n2);
     void save_base_json(vector<Gene> cities, const std::vector<std::pair<float, float>> &points);
     void save_generation(int gen, float bestFitness, const std::vector<std::pair<float, float>> &points,
         vector<Gene> route, Gene first_point);

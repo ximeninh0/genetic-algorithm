@@ -21,11 +21,8 @@ public:
     bool is_gene_in_chrom(Gene &gene, queue<Gene> chromossome);
     void add_children_to_pop(Population &population, vector<Individual> &children);
     Population getBestHalf(Population &population);
-    void compare_couple_with_children(Population &population, vector<Individual> children, vector<Individual> couple);
-    void sort_and_anihilate(Population &population);
     Individual& tournament_selection(Population &population, int tournament_size);
     void reproduct_crossover_2_points(Individual &individual_1, Individual &individual_2, bool two_children, vector<Individual> &out_childrens);
     Individual gen_child_by_crossover(Individual &individual_1, Individual &individual_2);
 
-    Population create_offspring(Population& parent_population);
 };

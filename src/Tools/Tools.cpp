@@ -19,8 +19,8 @@ const double PI = std::acos(-1.0);
 
 using namespace std;
 
-
-Tools::Tools() : gen(std::chrono::system_clock::now().time_since_epoch().count()) {
+Tools::Tools() : gen(std::chrono::system_clock::now().time_since_epoch().count())
+{
     gen.seed(2213);
 }
 
@@ -52,15 +52,19 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints()
 
     int n, area;
 
-    // do
-    // {
+    do
+    {
         cout << "Insira a quantidade de pontos: " << endl;
         cin >> n;
-        /* code */
-    // } while (n > 26 || n <= 0 );
+    } while (n < 8);
 
-    cout << "Insira o raio da área de cobertura dos pontos: " << endl;
-    cin >> area;
+
+    do
+    {
+        cout << "Insira o raio da área de cobertura dos pontos: " << endl;
+        cin >> area;
+    } while (area < 10);
+    
 
     cities.clear();
     cities.reserve(n);
@@ -74,8 +78,8 @@ vector<Gene> Tools::PopulateCitiesWithRandomPoints()
         do
         {
 
-            random_x = this->random_number((area * (-1)), area, 2213);
-            random_y = this->random_number((area * (-1)), area, 2213);
+            random_x = this->random_number((area * (-1)), area);
+            random_y = this->random_number((area * (-1)), area);
         } while (pow(random_x, 2) + pow(random_y, 2) >= pow(area, 2)); // Repete até que esteja dentro do raio da circunferência
 
         int name = i + 1; // Nomeia a cidade com letras do alfabeto
@@ -89,14 +93,13 @@ vector<Gene> Tools::PopulateCitiesinCircle()
 {
     std::vector<Gene> cities;
 
-    
     int n_points, Radius;
     cout << "Insira a quantidade de pontos: " << endl;
     cin >> n_points;
-    
+
     cout << "Insira o raio da circunferencia: " << endl;
     cin >> Radius;
-    
+
     cities.clear();
     cities.reserve(n_points);
     double angleStep = 2.0 * PI / n_points;
@@ -111,12 +114,13 @@ vector<Gene> Tools::PopulateCitiesinCircle()
         int name = i + 1;
         cities.emplace_back(name, x, y);
     }
-    
+
     return cities;
 }
 
 // Função para calcular números aleatórios dentro de um intervalo inteiro com seed
-int Tools::random_number(int limite_inferior, int limite_superior, int seed) {
+int Tools::false_random_number(int limite_inferior, int limite_superior)
+{
     std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(this->gen); // 'this->gen' é o gerador da instância da classe
 }
@@ -163,7 +167,8 @@ void Tools::save_base_json(vector<Gene> cities, const std::vector<std::pair<floa
 {
     json j;
     int i = 0;
-    for (auto &c : cities){
+    for (auto &c : cities)
+    {
         j["cities"].push_back({c.get_name(), {points[i].first, points[i].second}});
         i++;
     }
@@ -182,29 +187,26 @@ std::vector<std::pair<float, float>> Tools::cities_to_tuple_array(vector<Gene> c
     return result;
 }
 
-
-void Tools::print_progress(int actual_epoch, int epochs){
+void Tools::print_progress(int actual_epoch, int epochs)
+{
     int proportion = 100;
-    float rel = (float)((float)actual_epoch/(float)epochs) * (float)proportion;
+    float rel = (float)((float)actual_epoch / (float)epochs) * (float)proportion;
     int dif = proportion - rel;
     cout << "\r";
 
-    cout << "[" ;
+    cout << "[";
 
-    for(int i = 0; i < rel-1; i++)
+    for (int i = 0; i < rel - 1; i++)
     {
         cout << "=";
-
     }
 
-        cout << ">";
-
+    cout << ">";
 
     for (int i = 0; i < dif; i++)
     {
         cout << " ";
-        
     }
-    
-    cout << "] "  << rel << "%" << "\r" << flush;
+
+    cout << "] " << rel << "%" << "\r" << flush;
 }

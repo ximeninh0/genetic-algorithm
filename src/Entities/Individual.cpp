@@ -20,23 +20,28 @@ Individual::Individual(vector<Gene> new_chromossome, int index, int generation, 
     this->index = index;
     this->generation = generation;
     this->first_city = first_route_city;
+    this->fitness_is_dirty = true;
 }
 
 Individual::~Individual(){
-    // delete &chromossome;
-    // delete &first_city;
-    // delete &index;
-    // delete &generation;
-    // cout << "DESTRUTOR!!" << endl;
 }
 // Muda o cromossomo para um novo
 void Individual::changeDNA(vector<Gene> &new_chrome){
     this->chromossome = new_chrome;
+
+    this->fitness_is_dirty = true;
 }
 
 // Retorna a qualidade do indivíduo
 int Individual::get_fitness() const
 {
+
+    if (!this->fitness_is_dirty)
+    {
+        return this->cache_fitness;
+    }
+    
+
     // Se o cromossomo estiver vazio (ex: n=1 cidade), a rota é A->A.
     // O fitness (distância) é 0.
     if (chromossome.empty())
@@ -47,19 +52,17 @@ int Individual::get_fitness() const
     int fitness = 0;
     Tools tools;
 
-    // 1. "Partida": Calcula a distância da first_city até o primeiro gene
     fitness -= tools.weight(this->first_city.get_point(), chromossome[0].get_point());
 
-    // 2. "Meio": Calcula a distância entre todos os genes do cromossomo
-    // (ex: G0->G1, G1->G2, G2->G3, ...)
     for (size_t i = 0; i < chromossome.size() - 1; i++)
     {
         fitness -= tools.weight(chromossome[i].get_point(), chromossome[i + 1].get_point());
     }
 
-    // 3. "Volta": Calcula a distância do último gene (chromossome.back())
-    // de volta para a first_city
     fitness -= tools.weight(chromossome.back().get_point(), this->first_city.get_point());
+
+    this->cache_fitness = fitness;
+    this->fitness_is_dirty = false;
 
     return fitness;
 }
@@ -115,4 +118,9 @@ bool Individual::operator>(const Individual& other) const
 {
 
     return this->get_fitness() > other.get_fitness();
+}
+
+void Individual::set_dirty_fitness()
+{
+    this->fitness_is_dirty = true;
 }

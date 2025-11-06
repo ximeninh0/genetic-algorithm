@@ -37,21 +37,20 @@ Population Reproduction::reproduct_population(Population &population)
     }
     vector<Individual> childrens;
     vector<Individual> selected_couple;
-    selected_couple.reserve(2);
+    selected_couple.resize(2);
     childrens.reserve(2);
-    cout << "achegou2" <<endl;
     int reproductions_amount = updated_population.get_size() - updated_population.get_elitism_size();
     for (int i = 0; i < reproductions_amount; i++)
     {
         bool make_two = false;
         
-        
+        childrens.clear();
         if ((updated_population.get_size() - new_population_individuals.size()) > 1)
-        make_two = true;
+            make_two = true;
         
-        this->roulette_method(population, selected_couple);
-        // selected_couple[0] = this->tournament_selection(population, this->tournament_size);
-        // selected_couple[1] = this->tournament_selection(population, this->tournament_size);
+        // this->roulette_method(population, selected_couple);
+        selected_couple[0] = this->tournament_selection(population, this->tournament_size);
+        selected_couple[1] = this->tournament_selection(population, this->tournament_size);
         // this->reproduct(selected_couple[0], selected_couple[1], make_two, childrens);
         this->reproduct_crossover_2_points(selected_couple[0], selected_couple[1], make_two, childrens);
 
@@ -410,7 +409,10 @@ Individual Reproduction::gen_child_by_crossover(Individual &individual_1, Indivi
 {
     Tools tools;
 
-    int c_size = individual_1.get_chromossome().size();
+    const vector<Gene>& parent1_chrom = individual_1.get_chromossome_ref();
+    const vector<Gene>& parent2_chrom = individual_2.get_chromossome_ref();
+
+    int c_size = parent1_chrom.size();
 
     int pos1;
     int pos2;
@@ -428,23 +430,20 @@ Individual Reproduction::gen_child_by_crossover(Individual &individual_1, Indivi
     }
 
     vector<Gene> first_children_chromossome(c_size);
-    std::set<char> genes_from_part;
+    std::set<int> genes_from_part;
 
-    // CORREÇÃO: Copia de pos1 até pos2 (INCLUSIVO)
-    for (int i = pos1; i <= pos2; i++) // <--- MUDANÇA AQUI
+    for (int i = pos1; i <= pos2; i++)
     {
-        first_children_chromossome[i] = individual_1.get_chromossome()[i];
+        first_children_chromossome[i] = parent1_chrom[i];
         genes_from_part.insert(first_children_chromossome[i].get_name());
     }
 
-    // CORREÇÃO: Começa em pos2 + 1 (que agora está correto)
     int child_iter = (pos2 + 1) % c_size;
     int parent_iter = (pos2 + 1) % c_size;
 
-    // CORREÇÃO: O loop while deve parar quando preencher o último slot (pos1 - 1)
     while (child_iter != pos1)
     {
-        Gene gene_from_parent2 = individual_2.get_chromossome()[parent_iter];
+        Gene gene_from_parent2 = parent2_chrom[parent_iter];
 
         if (genes_from_part.find(gene_from_parent2.get_name()) == genes_from_part.end())
         {
@@ -461,45 +460,4 @@ Individual Reproduction::gen_child_by_crossover(Individual &individual_1, Indivi
                      individual_1.get_first_gene());
 
     return child;
-}
-
-Population Reproduction::create_offspring(Population &parent_population)
-{
-    // 1. Cria uma nova população de "filhos"
-    Population offspring_population(parent_population.get_size(),
-                                    parent_population.get_generation() + 1,
-                                    parent_population.get_elitism_size());
-
-    vector<Individual> offspring_individuals;
-
-    // 2. Loop ATÉ que a população de filhos esteja cheia (tamanho 'size_p')
-    while (offspring_individuals.size() < offspring_population.get_size())
-    {
-        bool make_two = false;
-        vector<Individual> childrens;
-
-        // Verifica se há espaço para dois filhos
-        if ((offspring_population.get_size() - offspring_individuals.size()) > 1)
-            make_two = true;
-
-        // 3. Seleciona pais da população PAI
-        Individual &parent1 = this->tournament_selection(parent_population, this->tournament_size);
-        Individual &parent2 = this->tournament_selection(parent_population, this->tournament_size);
-
-        // 4. Cria os filhos (usando sua função de crossover)
-        this->reproduct_crossover_2_points(parent1, parent2, make_two, childrens);
-
-        if (make_two)
-        {
-            offspring_individuals.push_back(childrens[0]);
-            offspring_individuals.push_back(childrens[1]);
-        }
-        else
-        {
-            offspring_individuals.push_back(childrens[0]);
-        }
-    }
-
-    offspring_population.set_individuals(offspring_individuals);
-    return offspring_population;
 }

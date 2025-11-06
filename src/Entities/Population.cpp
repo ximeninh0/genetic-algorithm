@@ -31,7 +31,7 @@ Population::Population(Gene first_route_city, vector<Gene> cities, int size_p, i
         
         for (size_t i = 0; i < initial_chromossome.size(); i++)
         {
-            int random_index = tools.random_number(i, size - 1, 2213);
+            int random_index = tools.random_number(i, size - 1);
             
             Gene temp = new_indiv_chromo[random_index];
             new_indiv_chromo[random_index] = new_indiv_chromo[i];
@@ -73,18 +73,6 @@ void Population::pop_indv(){
 
 // Ordena os indivíduos com base na qualidade (do melhor pro pior) !!!== APLICAR QUICK SORT ==!!!
 void Population::sort_individuals(){
-    // vector<Individual> individuals = this->get_individuals();
-    // for (int i = 0; i < individuals.size(); i++){
-    //     for(int j = i; j < individuals.size(); j++){
-    //         if(individuals[j].get_fitness() > individuals[i].get_fitness()){
-    //             Individual temp = individuals[j];
-    //             individuals[j] = individuals[i];
-    //             individuals[i] = temp;
-    //         }
-    //     }
-    // }
-    // this->individuals = individuals;
-
     sort(this->individuals.begin(), this->individuals.end(), greater());
 }
 
@@ -133,8 +121,7 @@ void Population::print_population()
         this->individuals[i].print_individual();
     }
     cout << "\n" << endl;
-    
-    cout << "Debug" << endl;
+   
 }
 
 vector<Individual>& Population::get_individuals_ref()

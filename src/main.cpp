@@ -21,9 +21,12 @@ int main()
 {
     int option, tam_elite, tx_mut_indv, tx_mut_gene, size_p, epochs, tournament_size;
     vector<Gene> cities;
+    vector<Gene> aux_cities;
     Individual solution;
+    Individual circle;
     Tools tools;
     tools.header();
+    bool eh_does = false;
 
     cin >> option;
     switch (option)
@@ -33,6 +36,13 @@ int main()
         break;
     case 2:
         cities = tools.PopulateCitiesinCircle();
+        aux_cities = cities;
+
+        aux_cities.erase(aux_cities.begin());
+        circle.set_first_gene(cities[0]);
+        circle.set_chromossome(aux_cities);
+        circle.set_dirty_fitness();
+        eh_does = true;
         break;
     }
 
@@ -76,11 +86,11 @@ int main()
         
         case 2:
             tam_elite = 4;
-            size_p = 5;
-            epochs = 1000;
+            size_p = 35;
+            epochs = 800;
             tx_mut_indv = 100;
-            tx_mut_gene = 5;
-            tournament_size = 4;
+            tx_mut_gene = 30;
+            tournament_size = 6;
         break;
     }
 
@@ -95,13 +105,17 @@ int main()
     std::vector<std::pair<float,float>> pairs = tools.individual_to_tuple_array(solution.get_chromossome(), solution.get_first_gene());
     // cout << "tuplas: " << endl;
 
-    for (const auto& p : pairs) {
-        std::cout << "(" << p.first << ", " << p.second << ")\n";
-    }
+    // for (const auto& p : pairs) {
+    //     std::cout << "(" << p.first << ", " << p.second << ")\n";
+    // }
 
-    // tools.save_generation(population.get_generation(), solution.get_fitness(),pairs,solution.get_chromossome(),solution.get_first_gene());
     cout << "Custo Solução: " << solution.get_fitness();
     cout << "\n" << endl;
 
+    if (eh_does)
+    {
+        cout << "Custo ideal: " << circle.get_fitness() << endl;
+        cout << "Acertividade do algoritimo: " << (solution.get_fitness() / circle.get_fitness()) * 100 << "%" << endl;
+    }
     return 0;
 }

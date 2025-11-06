@@ -25,8 +25,8 @@ Population Mutation::mutate_population(Population &population)
 
         if (probability <= this->mutation_indv_rate)
         {
-            // this->mutate_indv_by_inverse(indvs_from_population[i]);
-            this->mutate_indv_by_rand_indx(indvs_from_population[i]);
+            this->mutate_indv_by_inverse(indvs_from_population[i]);
+            // this->mutate_indv_by_rand_indx(indvs_from_population[i]);
         }
     }
 
@@ -41,8 +41,6 @@ void Mutation::mutate_indv_by_rand_indx(Individual &individual)
     vector<Gene> chromossome = individual.get_chromossome();
     int chrom_size = individual.get_chromossome().size();
 
-    // *** FIX 1: Adicionar um guarda ***
-    // Mutação não é possível se houver menos de 2 genes para trocar
     if (chrom_size < 2)
     {
         return;
@@ -56,7 +54,6 @@ void Mutation::mutate_indv_by_rand_indx(Individual &individual)
             int random_second_index;
             do
             {
-                // *** FIX 2: Corrigir o intervalo ***
                 random_second_index = tools.random_number(0, chrom_size - 1);
             } while (random_second_index == i); // O loop do-while agora está seguro
 
@@ -70,16 +67,6 @@ void Mutation::mutate_indv_by_rand_indx(Individual &individual)
 
 void Mutation::mutate_indv_by_inverse(Individual &individual)
 {
-    // vector<Gene> &chromossome = individual.get_chromossome_ref();
-    // vector<Gene> new_chromossome;
-
-    // for (int i = chromossome.size() - 1; i >= 0; i--)
-    // {
-    //     new_chromossome.push_back(chromossome[i]);
-    // }
-
-    // individual.changeDNA(new_chromossome);
-
     Tools tools;
 
     vector<Gene> &chromossome = individual.get_chromossome_ref();
@@ -101,6 +88,8 @@ void Mutation::mutate_indv_by_inverse(Individual &individual)
         swap(pos1, pos2);
 
     reverse(chromossome.begin() + pos1, chromossome.begin() + pos2 + 1);
+
+    individual.set_dirty_fitness();
 }
 
 int Mutation::twins_score(Population &population)
