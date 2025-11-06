@@ -115,7 +115,7 @@ int main()
     if (eh_does)
     {
         cout << "Custo ideal: " << circle.get_fitness() << endl;
-        cout << "Acertividade do algoritimo: " << (solution.get_fitness() / circle.get_fitness()) * 100 << "%" << endl;
+        cout << "Acertividade do algoritimo: " << ( (float)circle.get_fitness() / (float)solution.get_fitness()) * 100 << "%" << endl;
     }
     return 0;
 }
