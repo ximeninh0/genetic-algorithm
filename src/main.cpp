@@ -89,7 +89,7 @@ int main()
             tam_elite = 5;
             size_p = 200;
             epochs = 2000;
-            tx_mut_indv = 100;
+            tx_mut_indv = 80;
             tx_mut_gene = 30;
             tournament_size = 10;
         break;

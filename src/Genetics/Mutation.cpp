@@ -92,6 +92,31 @@ void Mutation::mutate_indv_by_inverse(Individual &individual)
     individual.set_dirty_fitness();
 }
 
+void Mutation::thread_safe_mutate_indv_by_inverse(Individual &individual, Tools& tools)
+{
+    vector<Gene> &chromossome = individual.get_chromossome_ref();
+
+    int c_size = chromossome.size();
+
+    if (c_size < 2)
+        return;
+
+    int pos1;
+    int pos2;
+    do
+    {
+        pos1 = tools.random_number(0, c_size - 1);
+        pos2 = tools.random_number(0, c_size - 1);
+    } while (pos1 == pos2);
+
+    if (pos1 > pos2)
+        swap(pos1, pos2);
+
+    reverse(chromossome.begin() + pos1, chromossome.begin() + pos2 + 1);
+
+    individual.set_dirty_fitness();
+}
+
 int Mutation::twins_score(Population &population)
 {
     int twins_count = 0;

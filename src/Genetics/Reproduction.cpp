@@ -353,26 +353,29 @@ Population Reproduction::getBestHalf(Population &population)
 
 Individual &Reproduction::tournament_selection(Population &Population, int tournament_size)
 {
-    // Tools tools;
-    // vector individuos = pop.get_individuos()
-    // int size_pop = individuos.size()
-
-    // int best_competidor_index = tools.random(0, size_pop -1)
-    // individual best_competidor = individuos[size_pop]
-
-    /*
-    for(i in tournament_size -1){
-        int competidor_index = num_aleatorio
-        indv competirdor individuos[competidor_index]
-
-        se competidor.fit > best_competidor.fit
-            best_competidor = competidor;
-    }
-
-    return best_competidor
-    */
 
     Tools tools;
+
+    vector<Individual> &individuals = Population.get_individuals_ref();
+    int size_pop = individuals.size();
+
+    int best_competidor_index = tools.random_number(0, size_pop - 1);
+
+    for (int i = 1; i < tournament_size; i++)
+    {
+        int competidor_index = tools.random_number(0, size_pop - 1);
+
+        if (individuals[competidor_index].get_fitness() > individuals[best_competidor_index].get_fitness())
+        {
+            best_competidor_index = competidor_index;
+        }
+    }
+
+    return individuals[best_competidor_index];
+}
+
+Individual &Reproduction::thread_safe_tournament_selection(Population &Population, int tournament_size, Tools& tools)
+{
 
     vector<Individual> &individuals = Population.get_individuals_ref();
     int size_pop = individuals.size();
@@ -409,6 +412,61 @@ Individual Reproduction::gen_child_by_crossover(Individual &individual_1, Indivi
 {
     Tools tools;
 
+    const vector<Gene>& parent1_chrom = individual_1.get_chromossome_ref();
+    const vector<Gene>& parent2_chrom = individual_2.get_chromossome_ref();
+
+    int c_size = parent1_chrom.size();
+
+    int pos1;
+    int pos2;
+
+    do
+    {
+        pos1 = tools.random_number(0, c_size - 1);
+        pos2 = tools.random_number(0, c_size - 1);
+
+    } while (pos2 == pos1);
+
+    if (pos1 > pos2)
+    {
+        swap(pos1, pos2);
+    }
+
+    vector<Gene> first_children_chromossome(c_size);
+    std::set<int> genes_from_part;
+
+    for (int i = pos1; i <= pos2; i++)
+    {
+        first_children_chromossome[i] = parent1_chrom[i];
+        genes_from_part.insert(first_children_chromossome[i].get_name());
+    }
+
+    int child_iter = (pos2 + 1) % c_size;
+    int parent_iter = (pos2 + 1) % c_size;
+
+    while (child_iter != pos1)
+    {
+        Gene gene_from_parent2 = parent2_chrom[parent_iter];
+
+        if (genes_from_part.find(gene_from_parent2.get_name()) == genes_from_part.end())
+        {
+            first_children_chromossome[child_iter] = gene_from_parent2;
+            child_iter = (child_iter + 1) % c_size;
+        }
+
+        parent_iter = (parent_iter + 1) % c_size;
+    }
+
+    Individual child(first_children_chromossome,
+                     this->new_indv_index,
+                     individual_1.get_generation() + 1,
+                     individual_1.get_first_gene());
+
+    return child;
+}
+
+Individual Reproduction::thread_safe_gen_child_by_crossover(Individual &individual_1, Individual &individual_2, Tools& tools)
+{
     const vector<Gene>& parent1_chrom = individual_1.get_chromossome_ref();
     const vector<Gene>& parent2_chrom = individual_2.get_chromossome_ref();
 
