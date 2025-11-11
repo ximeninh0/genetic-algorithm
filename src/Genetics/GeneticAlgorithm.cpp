@@ -49,14 +49,16 @@ Individual GeneticAlgorithm::RunGeneticAlgorithim(Population &population, int ep
         population.sort_individuals();
         population = reproducion_tools.reproduct_population(population); // Realiza a reprodução com base na taxa de reprodução e na qtd de filhos
 
+        population.sort_individuals();
+
         population = mutation_tools.mutate_population(population); // Realiza a mutação com base na taxa de mutacão por indivíduo e por gene estipulada
 
         int best = population.get_best_fit();
         float avg = population.get_average_fit();
         int worst = population.get_worst_fit();
-        std::vector<std::pair<float, float>> best_solution = tools.individual_to_tuple_array(
-            population.get_individuals_ref()[0].get_chromossome_ref(),
-            population.get_individuals_ref()[0].get_first_gene());
+        // std::vector<std::pair<float, float>> best_solution = tools.individual_to_tuple_array(
+        //     population.get_individuals_ref()[0].get_chromossome_ref(),
+        //     population.get_individuals_ref()[0].get_first_gene());
 
         history << population.get_generation() << "," << best << "," << avg << "," << worst << ","
                 << population.get_individuals_ref()[0].get_first_gene().get_name() << "-";

@@ -21,7 +21,7 @@ using namespace std;
 
 Tools::Tools() : gen(std::chrono::system_clock::now().time_since_epoch().count())
 {
-    gen.seed(2213);
+    // gen.seed(2213);
 }
 
 // Função w, recebe dois pontos e calcula a distancia euclediana entre eles
@@ -29,8 +29,8 @@ float Tools::weight(Point P1, Point P2)
 {
     float x_dist = P1.get_x() - P2.get_x();
     float y_dist = P1.get_y() - P2.get_y();
-    float weight = pow(x_dist, 2) + pow(y_dist, 2);
-    return sqrt(weight);
+    
+    return (x_dist * x_dist) + (y_dist * y_dist);
 }
 
 // Função para imprimir o header
@@ -119,19 +119,10 @@ vector<Gene> Tools::PopulateCitiesinCircle()
 }
 
 // Função para calcular números aleatórios dentro de um intervalo inteiro com seed
-int Tools::false_random_number(int limite_inferior, int limite_superior)
+int Tools::random_number(int limite_inferior, int limite_superior)
 {
     std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
     return dist(this->gen); // 'this->gen' é o gerador da instância da classe
-}
-
-// Função para calcular números aleatórios dentro de um intervalo inteiro sem seed
-int Tools::random_number(int limite_inferior, int limite_superior)
-{
-    static std::mt19937 gen(
-        static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count()));
-    std::uniform_int_distribution<> dist(limite_inferior, limite_superior);
-    return dist(gen);
 }
 
 std::vector<std::pair<float, float>> Tools::individual_to_tuple_array(vector<Gene> chromossome, Gene first_point)

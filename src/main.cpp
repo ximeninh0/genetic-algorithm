@@ -15,7 +15,8 @@
 
 using namespace std;
 
-// g++ -Iinclude src/main.cpp src/Entities/*.cpp src/Tools/*.cpp src/Genetics/*.cpp -o main
+// g++ -std=c++20 -Iinclude -O2 -Wall -Wextra src/main.cpp src/Entities/*.cpp src/Genetics/*.cpp src/Tools/*.cpp -o genetic-algorithm
+
 
 int main()
 {
@@ -85,12 +86,12 @@ int main()
         break;
         
         case 2:
-            tam_elite = 4;
-            size_p = 35;
-            epochs = 800;
+            tam_elite = 5;
+            size_p = 200;
+            epochs = 2000;
             tx_mut_indv = 100;
             tx_mut_gene = 30;
-            tournament_size = 6;
+            tournament_size = 10;
         break;
     }
 
